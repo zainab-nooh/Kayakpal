@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'P22 Mackinac';
+    src: url('../fonts/fonnts.com-P22Mackinac-Medium.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_24pt-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter_28pt-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
