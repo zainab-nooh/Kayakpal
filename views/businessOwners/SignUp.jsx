@@ -6,7 +6,7 @@ function SignUp(props) {
         <Layout>
             <h1>Business Owner</h1>
             <h1>Sign Up</h1>
-            <a href='/mainPage'>Go back to Home Page</a>
+            <a href='/Home'>Go back to Home Page</a>
             <form action='/businessOwners' method="POST">
                 Name: <input type='text' name='name' placeholder='Enter your full name' required/><br/>
                 Email: <input type='text' name='email' placeholder='Enter your email' required/> <br/>

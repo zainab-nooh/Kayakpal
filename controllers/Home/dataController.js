@@ -14,3 +14,5 @@ dataController.index = async(req, res, next) => {
     }
 }
 
+
+module.exports = dataController

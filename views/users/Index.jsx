@@ -6,13 +6,13 @@ function Index(props) {
     <Layout>
       
       <h1>Are you a Customer or Business Owner?</h1>
-      <div class='user-options'>
-        <div class='option'>
-            <p><a href='/customers/SignUp'>Customer</a></p>
+      <div className='user-options'>
+        <div className='option'>
+            <p><a href='/customers'>Customer</a></p>
         </div>
         
-        <div class='option'>
-            <p><a href='/businessOwners/SignUp'>Business Owner</a></p>
+        <div className='option'>
+            <p><a href='/businessOwners'>Business Owner</a></p>
         </div>
       </div>
 

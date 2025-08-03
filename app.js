@@ -4,7 +4,8 @@ const jsxEngine = require('jsx-view-engine')
 const methodOverride = require('method-override')
 const  customerRoutes = require('./controllers/customers/routeController')
 const businessOwnerRoutes = require('./controllers/businessOwners/routeController')
-const indexPage = require('./controllers/mainPage/routeController')
+const indexPage = require('./controllers/Home/routeController')
+const usersRoute =  require('./controllers/users/routeController')
 
 
 const app = express()
@@ -25,7 +26,8 @@ app.use(morgan('dev'))
 // Web routes (for views)
 app.use('/businessOwners', businessOwnerRoutes) //Business Owners Routes connected
 app.use('/customers', customerRoutes) //Customers Routes Connected
-app.use('/Home', indexPage)
+app.use('/Home', indexPage) //Main Home Page
+app.use('/users', usersRoute)//Page after tapping Login in Main home page 
 //customers 
 //Business Owners
 

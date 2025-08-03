@@ -6,7 +6,7 @@ function SignIn(props) {
         <Layout>
             <h1>Customer</h1>
             <h1>Sign Up</h1>
-            <a href='/mainPage'>Go back to Home Page</a>
+            <a href='/Home'>Go back to Home Page</a>
             <form action='/customers' method="POST">
                 Email: <input type='text' name='email' placeholder='Enter your email' required/> <br/>
                 Password: <input type='password' name='password' placeholder='Enter your password' required/> <br/>

@@ -1,4 +1,4 @@
-const bcrypt =  require('bdrypt')
+const bcrypt =  require('bcrypt')
 const jwt = require('jsonwebtoken')
 const Customer = require('../../models/customer')
 

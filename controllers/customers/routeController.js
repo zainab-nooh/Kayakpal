@@ -9,10 +9,14 @@ router.post('/', dataController.createCustomer, viewController.redirectLogin)//S
 router.get('/', viewController.signUp)//Show SignUp form
 
 
-router.post('/login', dataController.loginCustomer, 'more stuff!! --> need to redirect to page kayaks booking' ) // Log in Customer
+//router.post('/login', dataController.loginCustomer, 'more stuff!! --> need to redirect to page kayaks booking' ) // Log in Customer
+router.post('/login', dataController.loginCustomer) // Log in Customer
 router.get('/login', viewController.signIn) // show up Log in page 
 
 
 router.put('/:id', dataController.updateCustomer)//Update Customer
 
 router.delete('/:id', dataController.auth, dataController.deleteCustomer) //Delete User 
+
+
+module.exports = router 
