@@ -2,7 +2,9 @@ const express = require('express')
 const morgan = require('morgan')
 const jsxEngine = require('jsx-view-engine')
 const methodOverride = require('method-override')
-
+const  customerRoutes = require('./controllers/customers/routeController')
+const businessOwnerRoutes = require('./controllers/businessOwners/routeController')
+const indexPage = require('./controllers/mainPage/routeController')
 
 
 const app = express()
@@ -21,6 +23,9 @@ app.use(express.static('public'))
 app.use(morgan('dev'))
 
 // Web routes (for views)
+app.use('/businessOwners', businessOwnerRoutes) //Business Owners Routes connected
+app.use('/customers', customerRoutes) //Customers Routes Connected
+app.use('/Home', indexPage)
 //customers 
 //Business Owners
 
