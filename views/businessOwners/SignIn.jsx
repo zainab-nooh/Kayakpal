@@ -11,7 +11,7 @@ function SignIn(props) {
                 Email: <input type='text' name='email' placeholder='Enter your email' required/> <br/>
                 Password: <input type='password' name='password' placeholder='Enter your password' required/> <br/>
 
-                <button type='submit' >Sign In</button>
+                <button type='submit' ><a href='/business/Index'></a>Sign In</button>
             </form>
 
         </Layout>
