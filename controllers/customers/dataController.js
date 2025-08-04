@@ -34,7 +34,7 @@ exports.createCustomer = async(req, res, next) => {
     try {
         const customer =  new Customer(req.body)
         await customer.save()//save customer 
-        const token = await customer.generatAuthToken() //generate a token for newly created customer 
+        const token = await customer.generateAuthToken() //generate a token for newly created customer 
         res.locals.data.token = token //store token 
         req.customer = customer //store customer 
         next()
@@ -52,7 +52,7 @@ exports.loginCustomer = async(req, res, next) => {
             res.status(400).send('Invalid login credintials')
         }
         else {
-            const token = await customer.generatAuthToken() // generate token for new users 
+            const token = await customer.generateAuthToken() // generate token for new users 
             res.locals.data.token = token //store token
             req.customer = customer //store customer 
             next()

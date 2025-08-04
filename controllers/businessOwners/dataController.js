@@ -34,7 +34,7 @@ exports.createBusinessOwner = async(req, res, next) => {
     try {
         const businessOwner =  new BusinessOwner(req.body)
         await businessOwner.save()//save business owner 
-        const token = await businessOwner.generatAuthToken() //generate a token for newly created business owner 
+        const token = await businessOwner.generateAuthToken() //generate a token for newly created business owner 
         res.locals.data.token = token //store token 
         req.businessOwner = businessOwner //store business owner 
         next()
@@ -52,7 +52,7 @@ exports.loginBusinessOwner = async(req, res, next) => {
             res.status(400).send('Invalid login credintials')
         }
         else {
-            const token = await businessOwner.generatAuthToken() // generate token for new users (Business Owners) 
+            const token = await businessOwner.generateAuthToken() // generate token for new users (Business Owners) 
             res.locals.data.token = token //store token
             req.businessOwner = businessOwner //store business owner 
             next()
