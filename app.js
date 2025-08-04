@@ -6,6 +6,7 @@ const  customerRoutes = require('./controllers/customers/routeController')
 const businessOwnerRoutes = require('./controllers/businessOwners/routeController')
 const indexPage = require('./controllers/Home/routeController')
 const usersRoute =  require('./controllers/users/routeController')
+const businessRoutes = require('./controllers/business/routeController')
 
 
 const app = express()
@@ -28,6 +29,8 @@ app.use('/businessOwners', businessOwnerRoutes) //Business Owners Routes connect
 app.use('/customers', customerRoutes) //Customers Routes Connected
 app.use('/Home', indexPage) //Main Home Page
 app.use('/users', usersRoute)//Page after tapping Login in Main home page 
+app.use('/business' ,businessRoutes) //Business Profiles Routes
+
 //customers 
 //Business Owners
 
