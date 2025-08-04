@@ -30,7 +30,7 @@ function Show(props) {
 
         {/* Edit business profile */}
         <div>
-            <a href={`/business/${props.business._id}/edit?tokrn=${props.token}`}>
+            <a href={`/business/${props.business._id}/edit?token=${props.token}`}>
             Edit ${props.business.name}</a>
         </div>
 

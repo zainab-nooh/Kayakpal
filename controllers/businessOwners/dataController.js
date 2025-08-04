@@ -6,27 +6,30 @@ const BusinessOwner = require('../../models/businessOwner')
 //Auth middleware
 exports.auth = async( req, res, next) => {
     try {
-        let token 
-        if(req.query.token) {//from query
-            token = req.query.token //save token
-        }else if(req.header('Authorization') ) {//from header
-            token = req.header('Authorization').replace('Bearer', '')
-        }else {
-            throw new Error('No token provided')
-        }
+       let token;
 
-        const data =  jwt.verify(token, 'secret') 
-        const businessOwner = await BusinessOwner.findOne( { _id: req.params.id})
-        if (!businessOwner) {
-            throw new Error()
-        }
-        req.businessOwner = businessOwner //save the business owner entered 
-        res.locals.data.token = token //save token in locals data and then pass it in another pages and actions  
-        next()
+    if (req.query.token) {
+      token = req.query.token;
+    } else if (req.header('Authorization')) {
+      token = req.header('Authorization').replace('Bearer ', '');
+    } else {
+      throw new Error('No token provided');
     }
-    catch(error) {
-        res.status(401).send('Not Authorized')
+
+    const data = jwt.verify(token, 'secret'); // 🔐 Replace 'secret' with process.env.JWT_SECRET ideally
+
+    const businessOwner = await BusinessOwner.findById(data._id);
+    if (!businessOwner) {
+      throw new Error('User not found');
     }
+
+    req.businessOwner = businessOwner;
+    res.locals.data.token = token;
+
+    next();
+  } catch (error) {
+    res.status(401).send('Not Authorized');
+  }
 }
 
 //Create Business Owner

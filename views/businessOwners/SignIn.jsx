@@ -7,7 +7,7 @@ function SignIn(props) {
             <h1>Business Owner</h1>
             <h1>Sign In</h1>
             <a href='/Home'>Go back to Home Page</a>
-            <form action='/businessOwners' method="POST">
+            <form action='/businessOwners/login' method="POST">
                 Email: <input type='text' name='email' placeholder='Enter your email' required/> <br/>
                 Password: <input type='password' name='password' placeholder='Enter your password' required/> <br/>
 

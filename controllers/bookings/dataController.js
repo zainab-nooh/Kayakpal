@@ -1,25 +1,23 @@
-const Business = require('../../models/business')
+const Booking = require('../../models/booking')
 
 
 const dataController = {}
 
-// Index a Business Profile
+// Index a Booking
 dataController.index = async(req, res, next )=> {
     try {
-        const businessOwner  = await req.businessOwner.populate('business')
-        res.locals.data.business = businessOwner.business
-        res.locals.data.token = req.token
+        const customer  = await req.customer.populate('bookings')
+        res.locals.data.bookings = customer.bookings
         next()
     }
     catch(error) {
         res.status(400).send( { message: error.message} )
     }
 }
-// Delete  a Business Profile
+// Delete  a Booking
 dataController.destroy = async(req, res, next) => {
     try {
-        await Business.findOneAndDelete({_id: req.params.id})
-        res.locals.data.token = req.token
+        await Booking.findOneAndDelete({_id: req.params.id})
         next()
     }
     catch(error) {
@@ -27,12 +25,11 @@ dataController.destroy = async(req, res, next) => {
     }
 }
 
-//Update a Business Profile
+//Update a Booking
 dataController.update = async(req, res, next) => {
     try {
-        res.locals.data.business = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true })
+        res.locals.data.booking = await Booking.findByIdAndUpdate(req.params.id, req.body, { new: true })
         // Find a business profile by id and update then store 
-        res.locals.data.token = req.token
         next()
     }
     catch(error) {
@@ -41,38 +38,34 @@ dataController.update = async(req, res, next) => {
 }
 
 
-//Create a Business Profile
+//Create a Booking
  dataController.create = async(req, res, next ) => {
     try{
-        res.locals.data.business = await Business.create( req.body )
+        res.locals.data.booking = await Booking.create( req.body )
          // Create a new Business Profile by taking data from body
-         req.businessOwner.business = res.locals.data.business._id;
+         res.customer.bookings.addToSet( { _id: res.locals.data.booking._id} )
          // add created Profile to all pofiles by storing it 
-         await req.businessOwner.save()//save last value to show later on 
-         
-         res.locals.data.token = req.token
+         await req.customer.save()//save last value to show later on 
          next() 
     }
-
-    
     catch(error) {
         res.status(400).send( { message: error.message } )
     }
  }
-//Show a Business Profile
+//Show a Booking
 
 dataController.show = async(req, res, next ) => {
     try{
         //await for a user to tap on a business profile to show it and then store it in memory 
-        res.locals.data.business = await Business.findById(req.params.id)
+        res.locals.data.booking = await Booking.findById(req.params.id)
         // if there is no profile with an id in the database , give the user  message indicating that 
-        if (!res.locals.data.business) {
-            throw new Error(`Could not locate a Business Profile with the id ${req.params.id}`)
+        if (!res.locals.data.booking) {
+            throw new Error(`Could not locate a Booking with the id ${req.params.id}`)
         }
         next()
     }
     catch(error) {
-        res.status(400).send( { message: error.message } )
+        res.status(400).send( { message: error.messsage } )
     }
 }
 

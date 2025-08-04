@@ -21,7 +21,7 @@ function New(props) {
                 Description: <input type='text' name='description' placeholder='Enter Description of you Business' required/> <br/>
                 Location: <input type='text' name='location' placeholder='Enter your Business location' required/> <br/>
                 {/* Upload image Palce of business  */}
-                <button type='submit' >Create Profile</button>
+                <button type='submit' ><a href={`/business?token=${props.token}`}>Create Profile</a></button>
         </form>
 
         
