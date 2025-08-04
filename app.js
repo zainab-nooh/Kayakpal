@@ -7,6 +7,7 @@ const businessOwnerRoutes = require('./controllers/businessOwners/routeControlle
 const indexPage = require('./controllers/Home/routeController')
 const usersRoute =  require('./controllers/users/routeController')
 const businessRoutes = require('./controllers/business/routeController')
+const kayakRoutes  = require('./controllers/kayaks/routeController')
 
 
 const app = express()
@@ -17,6 +18,7 @@ app.engine('jsx', jsxEngine())
 app.use(express.json()) // this is new this for the api
 app.use(express.urlencoded({ extended: true })) // req.body
 app.use(methodOverride('_method')) // <====== add method override
+//So important 
 app.use((req, res, next) => {
     res.locals.data = {}
     next()
@@ -30,7 +32,7 @@ app.use('/customers', customerRoutes) //Customers Routes Connected
 app.use('/Home', indexPage) //Main Home Page
 app.use('/users', usersRoute)//Page after tapping Login in Main home page 
 app.use('/business' ,businessRoutes) //Business Profiles Routes
-
+app.use('/kayaks', kayakRoutes)
 //customers 
 //Business Owners
 

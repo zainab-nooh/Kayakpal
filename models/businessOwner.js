@@ -1,12 +1,14 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const business = require('./business')
 
 const businessOwnerSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-// business Profile --> Bbusniess.js []
+  business: [{type: mongoose.Schema.Types.ObjectId, ref:'Business'}]
+// business Profile --> business.js []
 // This when populates happen  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
 })
 

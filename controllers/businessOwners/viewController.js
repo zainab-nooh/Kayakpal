@@ -6,6 +6,7 @@ const viewController = {
     },
     signIn( req, res, next) {
         res.render('businessOwners/SignIn')
+
     },
     apiAuth(req, res, next) {
         res.json( { customer: req.customer, token: res.locals.token} )
