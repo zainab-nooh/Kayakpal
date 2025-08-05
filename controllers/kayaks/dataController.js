@@ -1,19 +1,40 @@
 const Kayak = require('../../models/kayak')
+const Business = require('../../models/business');
 
 
 const dataController = {}
 
+dataController.index = async (req, res, next) => {
+  if (!res.locals.data) res.locals.data = {};
+  try {
+    const business = await Business.findById(req.businessOwner.business).populate('kayaks');
+
+    if (!business) {
+      return res.status(404).json({ message: 'Business profile not found.' });
+    }
+
+    res.locals.data.kayaks = business.kayaks;
+    next();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+
+
+
+
 // Index a Kayak Profile
-dataController.index = async(req, res, next )=> {
-    try {
-        const business  = await res.locals.data.business.populate('kayaks')
-        res.locals.data.kayaks = business.kayaks
-        next()
-    }
-    catch(error) {
-        res.status(400).send( { message: error.message} )
-    }
-}
+// dataController.index = async(req, res, next )=> {
+//     try {
+//         const business  = await res.locals.data.business.populate('kayaks')
+//         res.locals.data.kayaks = business.kayaks
+//         next()
+//     }
+//     catch(error) {
+//         res.status(400).send( { message: error.message} )
+//     }
+// }
 // Delete  a Kayak Profile
 dataController.destroy = async(req, res, next) => {
     try {
@@ -38,20 +59,50 @@ dataController.update = async(req, res, next) => {
 }
 
 
-//Create a Kayak Profile
- dataController.create = async(req, res, next ) => {
-    try{
-        res.locals.data.kayak = await Kayak.create( req.body )
-         // Create a new Kayak Profile by taking data from body
-         res.business.kayaks.addToSet( { _id: res.locals.data.business._id} )
-         // add created Profile to all pofiles by storing it 
-         await req.business.save()//save last value to show later on 
-         next() 
+dataController.create = async (req, res, next) => {
+  if (!res.locals.data) res.locals.data = {};
+
+  try {
+    const business = await Business.findById(req.businessOwner.business);
+
+    if (!business) {
+      return res.status(404).json({ message: 'Business profile not found.' });
     }
-    catch(error) {
-        res.status(400).send( { message: error.message } )
-    }
- }
+
+    const kayak = await Kayak.create(req.body);
+    business.kayaks.addToSet(kayak._id);
+    await business.save();
+
+    res.locals.data.kayak = kayak;
+    res.locals.data.token = req.query.token || res.locals.data.token || '';
+    next();
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
+
+
+
+
+
+
+
+
+// //Create a Kayak Profile
+//  dataController.create = async(req, res, next ) => {
+//     try{
+//         res.locals.data.kayak = await Kayak.create( req.body )
+//          // Create a new Kayak Profile by taking data from body
+//          res.business.kayaks.addToSet( { _id: res.locals.data.business._id} )
+//          // add created Profile to all pofiles by storing it 
+//          await req.business.save()//save last value to show later on 
+//          next() 
+//     }
+//     catch(error) {
+//         res.status(400).send( { message: error.message } )
+//     }
+//  }
 //Show a Kayak Profile
 
 dataController.show = async(req, res, next ) => {
