@@ -24,6 +24,7 @@ exports.auth = async( req, res, next) => {
     }
 
     req.businessOwner = businessOwner;
+    // req.locals.data.business = businessOwner
     res.locals.data.token = token;
 
     next();
@@ -52,10 +53,11 @@ exports.loginBusinessOwner = async(req, res, next) => {
     try {
         const businessOwner = await BusinessOwner.findOne({ email: req.body.email }) 
         if(!businessOwner || !await bcrypt.compare(req.body.password, businessOwner.password)) {//compare password entered and saved password in database 
-            res.status(400).send('Invalid login credintials')
+            return res.status(400).send('Invalid login credintials')
         }
         else {
             const token = await businessOwner.generateAuthToken() // generate token for new users (Business Owners) 
+            
             res.locals.data.token = token //store token
             req.businessOwner = businessOwner //store business owner 
             next()

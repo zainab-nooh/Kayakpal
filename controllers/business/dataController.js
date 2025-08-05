@@ -8,7 +8,7 @@ dataController.index = async(req, res, next )=> {
     try {
         const businessProfiles  = await Business.find({})
         res.locals.data.businessProfiles = businessProfiles
-        res.locals.data.token = req.query.token
+        res.locals.data.token = req.query.token? req.query.token: res.locals.data.token
         next()
     }
     catch(error) {
@@ -66,7 +66,7 @@ dataController.update = async(req, res, next) => {
 dataController.show = async(req, res, next ) => {
     try{
         //await for a user to tap on a business profile to show it and then store it in memory 
-        res.locals.data.business = await Business.findById(req.params.id)
+        res.locals.data.business = await Business.findById(req.params.id).populate('kayaks')
         // if there is no profile with an id in the database , give the user  message indicating that 
         if (!res.locals.data.business) {
             throw new Error(`Could not locate a Business Profile with the id ${req.params.id}`)

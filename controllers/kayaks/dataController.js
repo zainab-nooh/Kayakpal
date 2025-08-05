@@ -6,7 +6,7 @@ const dataController = {}
 // Index a Kayak Profile
 dataController.index = async(req, res, next )=> {
     try {
-        const business  = await req.business.populate('kayaks')
+        const business  = await res.locals.data.business.populate('kayaks')
         res.locals.data.kayaks = business.kayaks
         next()
     }
