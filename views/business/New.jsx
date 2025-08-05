@@ -16,12 +16,14 @@ function New(props) {
 
         <h1>Business Profile</h1>
 
-        <form action='/business' method="POST">
+        <form action={`/business?token=${props.token}`} method="POST">
                 Name: <input type='text' name='name' placeholder='Enter your Business Name' required/> <br/>
                 Description: <input type='text' name='description' placeholder='Enter Description of you Business' required/> <br/>
                 Location: <input type='text' name='location' placeholder='Enter your Business location' required/> <br/>
                 {/* Upload image Palce of business  */}
-                <button type='submit' ><a href={`/business?token=${props.token}`}>Create Profile</a></button>
+                  
+                  <input value='Create Profile' type='submit' />
+
         </form>
 
         

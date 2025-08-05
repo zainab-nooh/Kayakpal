@@ -13,7 +13,7 @@ function SignUp(props) {
                 Password: <input type='password' name='password' placeholder='Enter your password' required/> <br/>
                 <input type='submit' value='Submit to Register' />
 
-                <p>Have an account ...<a href='/businessOwners/SignIn'>login</a></p>
+                <p>Have an account ...<a href='/businessOwners/login'>login</a></p>
             </form>
 
         </Layout>

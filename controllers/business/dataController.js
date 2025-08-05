@@ -6,9 +6,9 @@ const dataController = {}
 // Index a Business Profile
 dataController.index = async(req, res, next )=> {
     try {
-        const businessOwner  = await req.businessOwner.populate('business')
-        res.locals.data.business = businessOwner.business
-        res.locals.data.token = req.token
+        const businessProfiles  = await Business.find({})
+        res.locals.data.businessProfiles = businessProfiles
+        res.locals.data.token = req.query.token
         next()
     }
     catch(error) {
@@ -19,7 +19,7 @@ dataController.index = async(req, res, next )=> {
 dataController.destroy = async(req, res, next) => {
     try {
         await Business.findOneAndDelete({_id: req.params.id})
-        res.locals.data.token = req.token
+        res.locals.data.token = req.query.token
         next()
     }
     catch(error) {
@@ -32,7 +32,7 @@ dataController.update = async(req, res, next) => {
     try {
         res.locals.data.business = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true })
         // Find a business profile by id and update then store 
-        res.locals.data.token = req.token
+        res.locals.data.token = req.query.token
         next()
     }
     catch(error) {
@@ -43,6 +43,8 @@ dataController.update = async(req, res, next) => {
 
 //Create a Business Profile
  dataController.create = async(req, res, next ) => {
+    console.log(req.body)
+    console.log(res.locals.data)
     try{
         res.locals.data.business = await Business.create( req.body )
          // Create a new Business Profile by taking data from body
@@ -50,7 +52,7 @@ dataController.update = async(req, res, next) => {
          // add created Profile to all pofiles by storing it 
          await req.businessOwner.save()//save last value to show later on 
          
-         res.locals.data.token = req.token
+        //  res.locals.data.token = req.query.token
          next() 
     }
 

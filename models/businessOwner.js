@@ -7,7 +7,7 @@ const businessOwnerSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
-  business: [{type: mongoose.Schema.Types.ObjectId, ref:'Business'}]
+  business: {type: mongoose.Schema.Types.ObjectId, ref:'Business'}
 // business Profile --> business.js []
 // This when populates happen  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
 })

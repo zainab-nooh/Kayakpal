@@ -2,7 +2,7 @@ const React = require('react')
 const Layout = require('../layouts/Layout')
 
 function Index(props) {
-    const busineesprofiles = props.busineesprofiles
+    const businessProfiles = props.businessProfiles
   return(
     <Layout>
         <nav>
@@ -16,6 +16,12 @@ function Index(props) {
         </nav>
         <div>
         <h1>All Business Profiles</h1>
+        {
+          businessProfiles.map(businessProfile => {
+            return <p>{businessProfile.name}</p>
+          })
+
+        }
         <a href={`/business/new?token=${props.token}`}>Add Your Business</a>
         </div>
 
