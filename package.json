@@ -4,7 +4,8 @@
   "description": "Kayakpal is a specialized booking platform that connects kayak enthusiasts with local kayak rental businesses and tour operators. The platform streamlines the kayak rental experience by providing dedicated interfaces for both customers and business owners to manage bookings, profiles, and kayak fleet operations.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
