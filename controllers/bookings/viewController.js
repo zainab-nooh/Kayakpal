@@ -3,6 +3,7 @@ const viewController = {
 
     //Index
     index(req, res, next) {
+        console.log(res.locals.data.bookings)
         res.render('bookings/Index', res.locals.data)
     },
 
@@ -24,7 +25,8 @@ const viewController = {
     );
             res.render('bookings/New', {
         customer: req.customer,  // Pass customer data
-        props: res.locals.data   // Pass other data as props
+        props: res.locals.data,
+        token: res.locals.data.token   // Pass other data as props
     })
         // res.render('bookings/New', res.locals.data)
     },

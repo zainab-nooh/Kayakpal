@@ -48,6 +48,8 @@ dataController.create = async (req, res, next) => {
       kayak: req.body.kayakId, // or however you're passing kayak
       bookingDateTime,
     });
+    req.customer.bookings.addToSet(booking._id)
+    await req.customer.save()
 
     res.locals.data.booking = booking;
     next();

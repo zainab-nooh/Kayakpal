@@ -6,7 +6,7 @@ function New(data) {
   console.log('Data received:', data);
   
   return (
-    <Layout>
+    <Layout token={data.token}>
       <nav>
         <ul>
           <li>
