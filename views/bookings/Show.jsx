@@ -7,10 +7,19 @@ function Show(data) {
   // The kayak should be populated in booking.kayak
   const kayak = booking?.kayak;
 
-  // Format date and time from booking.bookingDateTime (same as in Edit.jsx)
+  // Format date and time from booking.bookingDateTime
   const datetime = booking?.bookingDateTime ? new Date(booking.bookingDateTime) : null;
   const formattedDate = datetime ? datetime.toISOString().slice(0, 10) : 'N/A'; // YYYY-MM-DD
-  const formattedTime = datetime ? datetime.toTimeString().slice(0, 5) : 'N/A'; // HH:MM (24hr)
+  const startTime = datetime ? datetime.toTimeString().slice(0, 5) : 'N/A'; // HH:MM (24hr)
+  
+  // Calculate end time based on duration (assuming duration is in minutes)
+  const duration = booking?.duration || 60; // Default to 60 minutes if not set
+  const endTime = datetime ? 
+    new Date(datetime.getTime() + duration * 60000).toTimeString().slice(0, 5) : 'N/A';
+  
+  // Calculate total price
+  const hourlyRate = kayak?.price || 0;
+  const totalPrice = (hourlyRate * (duration / 60)).toFixed(2);
 
   return (
     <Layout token={token}>
@@ -28,8 +37,12 @@ function Show(data) {
 
       <p><strong>Customer:</strong> {customer?.name || 'N/A'}</p>
       <p><strong>Date:</strong> {formattedDate}</p>
-      <p><strong>Time:</strong> {formattedTime}</p>
+      <p><strong>Start Time:</strong> {startTime}</p>
+      <p><strong>End Time:</strong> {endTime}</p>
+      <p><strong>Duration:</strong> {duration} minutes</p>
       <p><strong>Kayak:</strong> {kayak?.title || 'N/A'}</p>
+      <p><strong>Hourly Rate:</strong> ${hourlyRate}/hour</p>
+      <p><strong>Total Price:</strong> ${totalPrice}</p>
 
       <div style={{ marginTop: '1.5em' }}>
         <a href={`/bookings/${booking?._id}/edit?token=${token}`}>

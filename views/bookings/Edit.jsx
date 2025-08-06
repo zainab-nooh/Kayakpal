@@ -21,6 +21,7 @@ function Edit(props) {
   const datetime = new Date(booking.bookingDateTime);
   const formattedDate = datetime.toISOString().slice(0, 10); // YYYY-MM-DD
   const formattedTime = datetime.toTimeString().slice(0, 5); // HH:MM (24hr)
+  const duration = booking.duration || 60; // Default to 60 minutes
 
   return (
     <Layout token={token}>
@@ -54,7 +55,7 @@ function Edit(props) {
         <br />
 
         <label>
-          Time:
+          Start Time:
           <input
             type="time"
             name="time"
@@ -63,6 +64,20 @@ function Edit(props) {
           />
         </label>
         <br />
+
+        <label>
+          Duration:
+          <select name="duration" defaultValue={duration}>
+            <option value="30">30 minutes</option>
+            <option value="60">1 hour</option>
+            <option value="90">1.5 hours</option>
+            <option value="120">2 hours</option>
+            <option value="150">2.5 hours</option>
+            <option value="180">3 hours</option>
+          </select>
+        </label>
+        <br />
+        
         <input type='submit' value='Update Booking' />
       </form>
 

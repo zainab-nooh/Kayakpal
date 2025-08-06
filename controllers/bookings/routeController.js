@@ -13,14 +13,37 @@ router.get('/', customerAuthDataController.auth,
     viewController.index
 )
 
-//New - GET
-router.get('/new', customerAuthDataController.auth,
-     (req, res, next) => {
-    if (!res.locals.data) res.locals.data = {};
-    res.locals.data.customer = req.customer; // <- pass customer to views
-    next();
-  }, viewController.newView
-)
+
+
+
+
+// In your booking routeController, update the route for /new
+router.get('/new', customerAuthDataController.auth, 
+  async (req, res, next) => {
+    try {
+      // Fetch all available kayaks
+      const Kayak = require('../../models/kayak'); // Adjust path as needed
+      const kayaks = await Kayak.find({});
+      
+      if (!res.locals.data) res.locals.data = {};
+      res.locals.data.customer = req.customer;
+      res.locals.data.kayaks = kayaks; // Add kayaks to the data
+      res.locals.data.token = req.query.token; // Add token
+      next();
+    } catch (error) {
+      res.status(400).send({ message: error.message });
+    }
+  }, 
+  viewController.newView 
+);
+// //New - GET
+// router.get('/new', customerAuthDataController.auth,
+//      (req, res, next) => {
+//     if (!res.locals.data) res.locals.data = {};
+//     res.locals.data.customer = req.customer; // <- pass customer to views
+//     next();
+//   }, viewController.newView
+// )
 
 //Delete - DELETE
 router.delete('/:id', customerAuthDataController.auth,

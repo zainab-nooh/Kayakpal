@@ -31,7 +31,7 @@ function CustomerIndex(props) {
               {kayak.business && (
                 <p>
                   <strong>Business:</strong> {kayak.business.name} {' '}
-                  <a href={`/public/kayaks/business/${kayak.business._id}`}>View all kayaks from this business</a>
+  
                 </p>
               )}
               <a href={`/bookings/new?token=${props.data.token}`}>Add a Booking</a>
