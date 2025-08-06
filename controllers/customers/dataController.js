@@ -16,7 +16,8 @@ exports.auth = async( req, res, next) => {
         }
 
         const data =  jwt.verify(token, 'secret') 
-        const customer = await Customer.findOne( { _id: req.params.id})
+        const customer = await Customer.findById(data._id)
+        // const customer = await Customer.findOne( { _id: req.params.id})
         if (!customer) {
             throw new Error()
         }

@@ -6,6 +6,7 @@ const customerSchema = new mongoose.Schema({
   name: String,
   email: String,
   password: String,
+  bookings: [{type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
 // bookingS []
 // This when populates happen  bookings: [{ type: mongoose.Schema.Types.ObjectId, ref:'Booking'}]
 })

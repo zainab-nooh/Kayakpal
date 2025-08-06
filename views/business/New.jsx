@@ -22,7 +22,7 @@ function New(props) {
                 Location: <input type='text' name='location' placeholder='Enter your Business location' required/> <br/>
                 {/* Upload image Palce of business  */}
                   
-                  <input value='Create Profile' type='submit' />
+                  <input value='Create a Booking' type='submit' />
 
         </form>
 

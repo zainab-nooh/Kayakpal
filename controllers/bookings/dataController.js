@@ -37,21 +37,44 @@ dataController.update = async(req, res, next) => {
     }
 }
 
+dataController.create = async (req, res, next) => {
+  try {
+    const { date, time } = req.body;
+    const bookingDateTime = new Date(`${date}T${time}`);
 
-//Create a Booking
- dataController.create = async(req, res, next ) => {
-    try{
-        res.locals.data.booking = await Booking.create( req.body )
-         // Create a new Business Profile by taking data from body
-         res.customer.bookings.addToSet( { _id: res.locals.data.booking._id} )
-         // add created Profile to all pofiles by storing it 
-         await req.customer.save()//save last value to show later on 
-         next() 
-    }
-    catch(error) {
-        res.status(400).send( { message: error.message } )
-    }
- }
+    const booking = await Booking.create({
+        // ...req.body
+      customer: req.customer._id,
+      kayak: req.body.kayakId, // or however you're passing kayak
+      bookingDateTime,
+    });
+
+    res.locals.data.booking = booking;
+    next();
+  } catch (err) {
+    res.status(400).send(err.message); // <- helpful for debugging
+  }
+};
+
+
+
+
+// //Create a Booking
+// dataController.create = async (req, res, next) => {
+//   try {
+//     const booking = await Booking.create(req.body);
+//     res.locals.data.booking = booking;
+
+//     // Add booking to customer
+//     req.customer.bookings.addToSet(booking._id);
+//     await req.customer.save();
+
+//     next();
+//   } catch (error) {
+//     res.status(400).send({ message: error.message });
+//   }
+// };
+
 //Show a Booking
 
 dataController.show = async(req, res, next ) => {

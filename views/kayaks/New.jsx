@@ -1,7 +1,7 @@
 const React = require('react');
 const Layout = require('../layouts/Layout');
 
-function New(props) {
+function New({props}) {
   return (
     <Layout>
       <nav>
@@ -16,14 +16,29 @@ function New(props) {
 
       <h1>Kayak</h1>
 
-      <form action={`/kayaks?token=${props.token}`} method="POST">
-        Title: <input type='text' name='title' placeholder='Enter your Kayak title' required /> <br />
-        Description: <input type='text' name='description' placeholder='Enter Description of your Kayak' required /> <br />
-        Price: <input type='text' name='price' placeholder="Enter your Kayak's Price per hour" required /> <br />
-        <input type='submit' value='Create Kayak Profile' />
-        
-      </form>
-    </Layout>
+
+
+<form action={`/kayaks?token=${props.token}`} method="POST" encType="multipart/form-data">
+  <label>Title:
+    <input type="text" name="title" required />
+  </label><br />
+
+  <label>Description:
+    <textarea name="description" required></textarea>
+  </label><br />
+
+  <label>Price (per hour):
+    <input type="number" name="price" step="0.01" required />
+  </label><br />
+
+  <label>Photo:
+    <input type="file" name="photo" accept="image/*" />
+  </label><br />
+
+  <button type="submit">Create Kayak Profile</button>
+</form>
+
+</Layout>
   );
 }
 

@@ -15,7 +15,11 @@ router.get('/', customerAuthDataController.auth,
 
 //New - GET
 router.get('/new', customerAuthDataController.auth,
-    viewController.newView
+     (req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.customer = req.customer; // <- pass customer to views
+    next();
+  }, viewController.newView
 )
 
 //Delete - DELETE
@@ -43,4 +47,24 @@ router.get('/:id', customerAuthDataController.auth,
     dataController.show,
     viewController.show
 )
+
+// routeController.js
+router.post('/bookings/merge-date-time', async (req, res, next) => {
+  try {
+    const { date, time, kayak } = req.body;
+
+    const bookingDateTime = new Date(`${date}T${time}`);
+
+    req.body.bookingDateTime = bookingDateTime;
+    req.body.kayak = kayak;
+
+    delete req.body.date;
+    delete req.body.time;
+
+    next(); // forward to your create controller
+  } catch (err) {
+    res.status(400).send({ message: 'Invalid date or time format' });
+  }
+}, dataController.create, viewController.redirectShow);
+
 module.exports = router

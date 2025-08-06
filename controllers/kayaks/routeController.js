@@ -1,46 +1,69 @@
-const express = require('express')
-const router = express.Router()
+const express = require('express');
+const router = express.Router();
+const path = require('path');
+const multer = require('multer');
 
-const viewController = require('./viewController')
-const dataController = require('./dataController')
-const businessOwnerAuthDataController = require('../businessOwners/dataController')
+// Multer Setup for File Uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './public/upload'); // Folder to store uploaded images
+  },
+  filename: function (req, file, cb) {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
 
+const upload = multer({ storage });
 
-//Index - GET
+const viewController = require('./viewController');
+const dataController = require('./dataController');
+const businessOwnerAuthDataController = require('../businessOwners/dataController');
 
-router.get('/', businessOwnerAuthDataController.auth, 
-    dataController.index,
-    viewController.index
-)
+// Index - GET
+router.get('/', businessOwnerAuthDataController.auth,
+  dataController.index,
+  viewController.index
+);
 
-//New - GET
+// New - GET
 router.get('/new', businessOwnerAuthDataController.auth,
-    viewController.newView
-)
+  viewController.newView
+);
 
-//Delete - DELETE
+// Delete - DELETE
 router.delete('/:id', businessOwnerAuthDataController.auth,
-    dataController.destroy, 
-    viewController.redirectHome
-)
-//Update - PUT
+  dataController.destroy,
+  viewController.redirectHome
+);
+
+// Update - PUT (optional: support re-uploading image)
 router.put('/:id', businessOwnerAuthDataController.auth,
-    dataController.update, 
-    viewController.redirectShow
-)
-//Create - POST
+  upload.single('photo'), // <-- Add this if PUT form allows image re-upload
+  dataController.update,
+  viewController.redirectShow
+);
+
+// Create - POST
 router.post('/', businessOwnerAuthDataController.auth,
-    dataController.create,
-    viewController.redirectHome
-)
-//Edit - GET
+  upload.single('photo'), // <-- This enables image upload
+  (req, res, next) =>{
+    console.log(req.body)
+    next()
+  } ,
+  dataController.create,
+  viewController.redirectHome
+);
+
+// Edit - GET
 router.get('/:id/edit', businessOwnerAuthDataController.auth,
-    dataController.show,
-    viewController.edit
-)
-//Show - GET
+  dataController.show,
+  viewController.edit
+);
+
+// Show - GET
 router.get('/:id', businessOwnerAuthDataController.auth,
-    dataController.show,
-    viewController.show
-)
-module.exports = router
+  dataController.show,
+  viewController.show
+);
+
+module.exports = router;

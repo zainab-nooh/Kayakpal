@@ -8,7 +8,7 @@ dataController.index = async(req, res, next) => {
     
     try {
         // Only show businesses owned by the current business owner
-        const businessProfiles = await Business.find({ owner: req.businessOwner._id });
+        const businessProfiles = await Business.find();
         res.locals.data.businessProfiles = businessProfiles;
         res.locals.data.token = req.query.token ? req.query.token : res.locals.data.token;
         next();
@@ -116,9 +116,9 @@ dataController.show = async (req, res, next) => {
         }
         
         // Check if business belongs to current owner (optional security check)
-        if (business.owner.toString() !== req.businessOwner._id.toString()) {
-            return res.status(403).send({ message: 'Unauthorized to view this business' });
-        }
+        // if (business.owner.toString() !== req.businessOwner._id.toString()) {
+        //     return res.status(403).send({ message: 'Unauthorized to view this business' });
+        // }
 
         res.locals.data.business = business;
         res.locals.data.token = req.query.token || res.locals.data.token || '';

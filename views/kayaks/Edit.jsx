@@ -22,6 +22,7 @@ function Edit(props) {
                 Title: <input type='text' name='title' placeholder='Enter your Kayak title' required defaultValue={title}/> <br/>
                 Description: <input type='text' name='description' placeholder='Enter Description of your Kayak' required defaultValue={description}/> <br/>
                 Price: <input type='text' name='price' placeholder="Enter your Kayak's Price per hour" required defaultValue={price} /> <br/>
+                <input type='file' name="photo" accept="image/*" />
                 {/* Upload image Palce of Kayak  */}
 
                {/* Update Kayak Profile */}

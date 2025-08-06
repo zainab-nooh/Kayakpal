@@ -28,6 +28,7 @@ exports.auth = async( req, res, next) => {
     req.businessOwner = businessOwner;
     // req.locals.data.business = businessOwner
     res.locals.data.token = token;
+    res.locals.data.currentBusiness = businessOwner
 
     next();
   } catch (error) {

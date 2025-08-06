@@ -20,71 +20,88 @@ dataController.index = async (req, res, next) => {
         
         const kayaks = await Kayak.find({ business: businessId });
         res.locals.data.kayaks = kayaks;
+        console.log(kayaks)
         res.locals.data.token = req.query.token || res.locals.data.token || '';
         next();
     } catch (error) {
         res.status(400).json({ message: error.message });
     }
 };
+
 
 dataController.create = async (req, res, next) => {
-    if (!res.locals.data) res.locals.data = {};
+  try {
+    const kayak = await Kayak.create({
+      ...req.body,
+      business: req.businessOwner.business,
+      photo: req.file ? `/upload/${req.file.filename}`: '' 
+    });
 
-    try {
-        // DEBUG: Log incoming data
-        console.log('=== KAYAK CREATE DEBUG ===');
-        console.log('req.body:', req.body);
-        console.log('req.businessOwner:', req.businessOwner);
-        console.log('req.businessOwner.business:', req.businessOwner.business);
+    const business = await Business.findById(req.businessOwner.business);
+    business.kayaks.push(kayak._id);
+    await business.save();
 
-        const businessId = getBusinessId(req.businessOwner.business);
-        console.log('businessId:', businessId);
-
-        if (!businessId) {
-            console.log('ERROR: No business ID found');
-            return res.status(400).json({ message: 'Business owner must have a business profile first.' });
-        }
-
-        const business = await Business.findById(businessId);
-        console.log('Found business:', business);
-
-        if (!business) {
-            console.log('ERROR: Business not found in database');
-            return res.status(404).json({ message: 'Business profile not found.' });
-        }
-
-        // Verify business ownership
-        if (business.owner.toString() !== req.businessOwner._id.toString()) {
-            console.log('ERROR: Business ownership mismatch');
-            return res.status(403).json({ message: 'Unauthorized to add kayaks to this business.' });
-        }
-
-        // Merge the business id into kayak data
-        const kayakData = {
-            ...req.body,
-            business: business._id
-        };
-        console.log('kayakData to create:', kayakData);
-
-        const kayak = await Kayak.create(kayakData);
-        console.log('Created kayak:', kayak);
-
-        // Add kayak to business kayaks array
-        business.kayaks.addToSet(kayak._id);
-        await business.save();
-        console.log('Updated business with kayak');
-
-        res.locals.data.kayak = kayak;
-        res.locals.data.token = req.query.token || res.locals.data.token || '';
-        console.log('=== KAYAK CREATE SUCCESS ===');
-        next();
-    } catch (error) {
-        console.log('=== KAYAK CREATE ERROR ===');
-        console.log('Error:', error);
-        console.log('Error message:', error.message);
-        res.status(400).json({ message: error.message });
-    }
+    res.locals.data.kayak = kayak;
+    next();
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
 };
+
+// dataController.create = async (req, res, next) => {
+// const photoPaths = req.files.map(file => `/upload/${file.filename}`);
+//     if (!res.locals.data) res.locals.data = {};
+
+//     try {
+
+
+//         const businessId = getBusinessId(req.businessOwner.business);
+//         console.log('businessId:', businessId);
+
+//         if (!businessId) {
+
+//             return res.status(400).json({ message: 'Business owner must have a business profile first.' });
+//         }
+
+//         const business = await Business.findById(businessId);
+//         console.log('Found business:', business);
+
+//         if (!business) {
+
+//             return res.status(404).json({ message: 'Business profile not found.' });
+//         }
+
+//         // Verify business ownership
+//         if (business.owner.toString() !== req.businessOwner._id.toString()) {
+
+//             return res.status(403).json({ message: 'Unauthorized to add kayaks to this business.' });
+//         }
+
+//         // Merge the business id into kayak data
+//         const kayakData = {
+//             ...req.body,
+//             business: business._id,
+//             photos: photoPaths
+//         };
+//         console.log('kayakData to create:', kayakData);
+
+//         const kayak = await Kayak.create(kayakData);
+//         console.log('Created kayak:', kayak);
+
+//         // Add kayak to business kayaks array
+//         business.kayaks.addToSet(kayak._id);
+//         await business.save();
+
+
+//         res.locals.data.kayak = kayak;
+//         res.locals.data.token = req.query.token || res.locals.data.token || '';
+
+//         next();
+//     } catch (error) {
+
+//         res.status(400).json({ message: error.message });
+//     }
+// };
 
 dataController.show = async (req, res, next) => {
     if (!res.locals.data) res.locals.data = {};
@@ -159,5 +176,35 @@ dataController.destroy = async (req, res, next) => {
         res.status(400).send({ message: error.message });
     }
 };
+
+
+
+
+// Show All Kayaks for a customer 
+dataController.showAllKayaks = async(req,res,next) => {
+    try{
+        const kayaks  = await Kayak.find().populate('business')
+        res.locals.data.kayaks = kayaks
+        next()
+    } catch(error) {
+        res.status(400).send( { message: error.message } )
+    }
+
+}
+
+
+// Show a specific kayaks By the Business Id 
+
+dataController.showKayaksByBusinessId = async(req,res,next) => {
+    try{
+        const kayaks = await Kayak.find( { business: req.params.businessId } ).populate('business')
+        res.locals.data.kayaks = kayaks
+        next()
+
+    } catch(error) {
+        res.status(400).send( { message: error.message } )
+    }
+
+}
 
 module.exports = dataController;

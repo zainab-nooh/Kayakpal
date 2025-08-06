@@ -8,6 +8,8 @@ const indexPage = require('./controllers/Home/routeController')
 const usersRoute =  require('./controllers/users/routeController')
 const businessRoutes = require('./controllers/business/routeController')
 const kayakRoutes  = require('./controllers/kayaks/routeController')
+const publicKayakRoutes = require('./controllers/kayaks/publicRouteController')
+const bookingRoutes = require('./controllers/bookings/routeController')
 
 
 const app = express()
@@ -33,6 +35,9 @@ app.use('/Home', indexPage) //Main Home Page
 app.use('/users', usersRoute)//Page after tapping Login in Main home page 
 app.use('/business' ,businessRoutes) //Business Profiles Routes
 app.use('/kayaks', kayakRoutes)
+app.use('/bookings', bookingRoutes)
+
+app.use('/public/kayaks', publicKayakRoutes)
 //customers 
 //Business Owners
 

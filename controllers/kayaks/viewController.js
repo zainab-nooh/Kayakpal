@@ -1,3 +1,5 @@
+
+
 const RESOURCE_PATH = '/kayaks'
 const viewController = {
 
@@ -15,7 +17,7 @@ const viewController = {
         res.render('kayaks/Edit', {
             kayaks: res.locals.data.kayak,
             business: res.locals.data.business,
-            token: res.locals.data.token  // ✅ this is what you're missing
+            token: res.locals.data.token  
         })
     },
     //New 
@@ -37,6 +39,22 @@ const viewController = {
         } else {
             res.redirect(`${RESOURCE_PATH}/${req.params.id}`)
         }
+    }, 
+
+    //Show All kayaks to customers (view)
+    
+    showAllKayaks(req, res, next) {
+        res.render('kayaks/CustomerIndex', {
+            kayaks: res.locals.data.kayaks
+        })
+    },
+
+    //Show kayaks By businedd ID to customers (view)
+
+    showByBusiness(req, res, next) {
+        res.render('kayaks/CustomerBusinessKayaks', {
+            kayaks: res.locals.data.kayaks
+        })
     }
 }
 

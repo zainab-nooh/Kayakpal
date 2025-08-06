@@ -17,6 +17,7 @@ function Show(props) {
         <h1>{props.kayak.title}</h1>
 
         <div className='kayak-card'>
+          <img src={props.kayak.photo} />
             <div className='kayak-title'>{props.kayak.title}</div>
             <div className='kayak-description'>Description: {props.kayak.description}</div>
             <div className='kayak-price'>Price: {props.kayak.price}</div>

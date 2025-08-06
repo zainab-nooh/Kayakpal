@@ -15,8 +15,18 @@ const viewController = {
         res.render('bookings/Edit', res.locals.data)
     },
     //New 
+
+
+    
     newView(req, res, next) {
-        res.render('bookings/New', res.locals.data)
+            const selectedKayak = res.locals.data.kayaks?.find(kayak => 
+        kayak._id.toString() === req.params.kayakId
+    );
+            res.render('bookings/New', {
+        customer: req.customer,  // Pass customer data
+        props: res.locals.data   // Pass other data as props
+    })
+        // res.render('bookings/New', res.locals.data)
     },
     //Redirect Home
     redirectHome(req, res, next) {

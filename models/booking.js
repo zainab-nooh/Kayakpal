@@ -1,10 +1,12 @@
 const mongoose = require('mongoose')
 
 const bookingSchema = new mongoose.Schema({
-    // customer (ref),
-    // kayak (ref),
-    date: { type: Date, required: true },
-    status: { type: boolean, required: true },
+     customer: {type: mongoose.Schema.Types.ObjectId, ref:'Customer'},
+     kayak: {type: mongoose.Schema.Types.ObjectId, ref:'Kayak'},
+
+    bookingDateTime: { type: Date, required: true },
+    
+
 
 })
 

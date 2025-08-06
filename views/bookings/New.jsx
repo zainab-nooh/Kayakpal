@@ -1,7 +1,10 @@
 const React = require('react');
 const Layout = require('../layouts/Layout');
 
-function New(props) {
+function New(data) {
+  // data contains everything from res.locals.data
+  console.log('Data received:', data);
+  
   return (
     <Layout>
       <nav>
@@ -10,17 +13,24 @@ function New(props) {
             <img src="/images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
           </li>
           <li>Why Kayakpal</li>
-          <li><a href='/users/Index'>Login</a></li>
+          <li><a href='/customers'>Login</a></li>
         </ul>
       </nav>
+      <h1>Kayak Booking</h1>
 
-      <h1>Kayak</h1>
+      <p><strong>Customer: </strong>{data.customer?.name || 'No customer data'}</p>
 
-      <form action='/bookings' method="POST">
-        {/* business (refs)
-        bookingS [] */}
-        Date: <input type='date' name='date' placeholder='Enter Date for booking ' required /> <br />
-        Status: <input type='boolean' name='status'  required /> <br />
+      <form action={`/bookings?token=${data.token || ''}`} method="POST">
+        <label>
+          Date: <input type='date' name='date' required />
+        </label>
+        <br />
+
+        <label>
+          Time: <input type='time' name='time' required />
+        </label>
+        <br />
+
         <button type='submit'>Create a Booking</button>
       </form>
     </Layout>

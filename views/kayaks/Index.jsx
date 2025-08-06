@@ -5,7 +5,7 @@ const Layout = require('../layouts/Layout')
 
 function Index(props) {
     const kayaks = props.kayaks
-
+    console.log(props)
   return(
     <Layout>
         <nav>

@@ -5,7 +5,8 @@ const kayakSchema = new mongoose.Schema({
     description: { type: String, required: true },
     price: { type: Number, required: true },
 
-    business: { type: mongoose.Schema.Types.ObjectId, ref: 'Business', required: true }
+    business: { type: mongoose.Schema.Types.ObjectId, ref: 'Business', required: true },
+    photo: String, // Array of image paths
     // business (refs)
     // bookingS []
 })

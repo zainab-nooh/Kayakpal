@@ -2,6 +2,17 @@ const React = require('react')
 const Layout = require('../layouts/Layout')
 
 function Show(props) {
+  const currentBusinessId = props.data.currentBusiness._id.toString()
+  const business = props.business.owner.toString()
+  console.log(business)
+  console.log(currentBusinessId)
+  let loggedBusiness = null
+  if(currentBusinessId==business){
+    loggedBusiness=currentBusinessId
+    console.log(currentBusinessId)
+  }else {
+    loggedBusiness=null
+  }
   return (
     <Layout business={props.business}>
       <nav>
@@ -29,17 +40,26 @@ function Show(props) {
       </div>
 
       {/* Edit business profile */}
+      {
+        loggedBusiness==currentBusinessId?
       <div>
         <a href={`/business/${props.business._id}/edit?token=${props.token}`}>
           Edit ${props.business.name}</a>
-      </div>
+      </div>:
+      <></>
+
+      }
 
       {/* Delete business profile */}
+      {
+        loggedBusiness?
       <form action={`/business/${props.business._id}?_method=DELETE&token=${props.token}`} method="POST">
         <button>
           Delete {props.business.name}
         </button>
-      </form>
+      </form>:
+      <></>
+      }
 
 
       {/* Add Kayaks */}
