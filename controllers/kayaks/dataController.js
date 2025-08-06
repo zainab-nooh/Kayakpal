@@ -13,6 +13,11 @@ dataController.index = async (req, res, next) => {
     if (!res.locals.data) res.locals.data = {};
     try {
         const businessId = getBusinessId(req.businessOwner.business);
+        
+        if (!businessId) {
+            return res.status(400).json({ message: 'Business owner must have a business profile first.' });
+        }
+        
         const kayaks = await Kayak.find({ business: businessId });
         res.locals.data.kayaks = kayaks;
         res.locals.data.token = req.query.token || res.locals.data.token || '';
@@ -48,6 +53,12 @@ dataController.create = async (req, res, next) => {
             return res.status(404).json({ message: 'Business profile not found.' });
         }
 
+        // Verify business ownership
+        if (business.owner.toString() !== req.businessOwner._id.toString()) {
+            console.log('ERROR: Business ownership mismatch');
+            return res.status(403).json({ message: 'Unauthorized to add kayaks to this business.' });
+        }
+
         // Merge the business id into kayak data
         const kayakData = {
             ...req.body,
@@ -58,6 +69,7 @@ dataController.create = async (req, res, next) => {
         const kayak = await Kayak.create(kayakData);
         console.log('Created kayak:', kayak);
 
+        // Add kayak to business kayaks array
         business.kayaks.addToSet(kayak._id);
         await business.save();
         console.log('Updated business with kayak');
@@ -74,45 +86,16 @@ dataController.create = async (req, res, next) => {
     }
 };
 
-
-
-// dataController.create = async (req, res, next) => {
-//     if (!res.locals.data) res.locals.data = {};
-
-//     try {
-//         const businessId = getBusinessId(req.businessOwner.business);
-//         const business = await Business.findById(businessId);
-
-//         if (!business) {
-//             return res.status(404).json({ message: 'Business profile not found.' });
-//         }
-
-//         // Merge the business id into kayak data
-//         const kayakData = {
-//             ...req.body,
-//             business: business._id
-//         };
-
-//         const kayak = await Kayak.create(kayakData);
-
-//         business.kayaks.addToSet(kayak._id);
-//         await business.save();
-
-//         res.locals.data.kayak = kayak;
-//         res.locals.data.token = req.query.token || res.locals.data.token || '';
-//         next();
-//     } catch (error) {
-//         res.status(400).json({ message: error.message });
-//     }
-// };
-
 dataController.show = async (req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
+    
     try {
         const kayak = await Kayak.findById(req.params.id).populate('business');
         if (!kayak) throw new Error(`Could not locate a Kayak Profile with the id ${req.params.id}`);
 
         const businessId = getBusinessId(req.businessOwner.business);
         
+        // Verify ownership through business
         if (kayak.business._id.toString() !== businessId) {
             return res.status(403).json({ message: 'Unauthorized' });
         }
@@ -127,12 +110,15 @@ dataController.show = async (req, res, next) => {
 };
 
 dataController.update = async (req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
+    
     try {
         const kayak = await Kayak.findById(req.params.id);
         if (!kayak) throw new Error('Kayak not found');
 
         const businessId = getBusinessId(req.businessOwner.business);
         
+        // Verify ownership
         if (kayak.business.toString() !== businessId) {
             return res.status(403).json({ message: 'Unauthorized' });
         }
@@ -146,17 +132,27 @@ dataController.update = async (req, res, next) => {
 };
 
 dataController.destroy = async (req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
+    
     try {
         const kayak = await Kayak.findById(req.params.id);
         if (!kayak) throw new Error('Kayak not found');
 
         const businessId = getBusinessId(req.businessOwner.business);
         
+        // Verify ownership
         if (kayak.business.toString() !== businessId) {
             return res.status(403).json({ message: 'Unauthorized' });
         }
 
+        // Remove kayak from business kayaks array
+        await Business.findByIdAndUpdate(kayak.business, {
+            $pull: { kayaks: kayak._id }
+        });
+
+        // Delete the kayak
         await Kayak.findByIdAndDelete(req.params.id);
+        
         res.locals.data.token = req.query.token || res.locals.data.token || '';
         next();
     } catch (error) {

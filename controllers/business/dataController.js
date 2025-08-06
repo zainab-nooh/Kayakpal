@@ -1,123 +1,131 @@
 const Business = require('../../models/business')
 
-
 const dataController = {}
 
 // Index a Business Profile
-dataController.index = async(req, res, next )=> {
+dataController.index = async(req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
+    
     try {
-        const businessProfiles  = await Business.find({})
-        res.locals.data.businessProfiles = businessProfiles
-        res.locals.data.token = req.query.token? req.query.token: res.locals.data.token
-        next()
+        // Only show businesses owned by the current business owner
+        const businessProfiles = await Business.find({ owner: req.businessOwner._id });
+        res.locals.data.businessProfiles = businessProfiles;
+        res.locals.data.token = req.query.token ? req.query.token : res.locals.data.token;
+        next();
     }
     catch(error) {
-        res.status(400).send( { message: error.message} )
+        res.status(400).send({ message: error.message });
     }
 }
-// Delete  a Business Profile
+
+// Delete a Business Profile
 dataController.destroy = async(req, res, next) => {
     try {
-        await Business.findOneAndDelete({_id: req.params.id})
-        res.locals.data.token = req.query.token
-        next()
+        const business = await Business.findById(req.params.id);
+        
+        // Check if business belongs to current owner
+        if (!business || business.owner.toString() !== req.businessOwner._id.toString()) {
+            return res.status(403).send({ message: 'Unauthorized to delete this business' });
+        }
+        
+        await Business.findOneAndDelete({ _id: req.params.id });
+        
+        // Remove business reference from business owner
+        req.businessOwner.business = undefined;
+        await req.businessOwner.save();
+        
+        res.locals.data.token = req.query.token;
+        next();
     }
     catch(error) {
-        res.status(400).send( { message: error.message } )
+        res.status(400).send({ message: error.message });
     }
 }
 
-//Update a Business Profile
+// Update a Business Profile
 dataController.update = async(req, res, next) => {
     try {
-        res.locals.data.business = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true })
-        // Find a business profile by id and update then store 
-        res.locals.data.token = req.query.token
-        next()
+        const business = await Business.findById(req.params.id);
+        
+        // Check if business belongs to current owner
+        if (!business || business.owner.toString() !== req.businessOwner._id.toString()) {
+            return res.status(403).send({ message: 'Unauthorized to update this business' });
+        }
+        
+        res.locals.data.business = await Business.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        res.locals.data.token = req.query.token;
+        next();
     }
     catch(error) {
-        res.status(400).send( { message: error.message } )
+        res.status(400).send({ message: error.message });
     }
 }
 
-
-// //Create a Business Profile
-//  dataController.create = async(req, res, next ) => {
-//     console.log(req.body)
-//     console.log(res.locals.data)
-//     try{
-//         res.locals.data.business = await Business.create( req.body )
-//          // Create a new Business Profile by taking data from body
-//          req.businessOwner.business = res.locals.data.business._id;
-//          // add created Profile to all pofiles by storing it 
-//          await req.businessOwner.save()//save last value to show later on 
-         
-//         //  res.locals.data.token = req.query.token
-//          next() 
-//     }
-
-    
-//     catch(error) {
-//         res.status(400).send( { message: error.message } )
-//     }
-//  }
-
+// Create a Business Profile
 dataController.create = async (req, res, next) => {
-  if (!res.locals.data) res.locals.data = {};
+    if (!res.locals.data) res.locals.data = {};
 
-  try {
-    const newBusiness = await Business.create(req.body);
-    req.businessOwner.business = newBusiness._id;
-    await req.businessOwner.save();
+    try {
+        console.log('=== BUSINESS CREATE DEBUG ===');
+        console.log('req.body:', req.body);
+        console.log('req.businessOwner:', req.businessOwner);
+        
+        // Check if business owner already has a business (due to unique constraint)
+        if (req.businessOwner.business) {
+            return res.status(400).send({ message: 'Business owner already has a business profile' });
+        }
+        
+        // Create business data with owner
+        const businessData = {
+            ...req.body,
+            owner: req.businessOwner._id  // Add the required owner field
+        };
+        
+        console.log('Creating business with data:', businessData);
+        
+        const newBusiness = await Business.create(businessData);
+        console.log('Created business:', newBusiness);
+        
+        // Update business owner with the new business reference
+        req.businessOwner.business = newBusiness._id;
+        await req.businessOwner.save();
+        console.log('Updated business owner with business reference');
 
-    res.locals.data.business = newBusiness;
-    res.locals.data.token = req.query.token || res.locals.data.token || '';
+        res.locals.data.business = newBusiness;
+        res.locals.data.token = req.query.token || res.locals.data.token || '';
 
-    next();
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
-};
-
-
-
-dataController.show = async (req, res, next) => {
-  if (!res.locals.data) res.locals.data = {};
-
-  try {
-    const business = await Business.findById(req.params.id).populate('kayaks');
-
-    if (!business) {
-      throw new Error(`Could not locate a Business Profile with the id ${req.params.id}`);
+        console.log('=== BUSINESS CREATE SUCCESS ===');
+        next();
+    } catch (error) {
+        console.log('=== BUSINESS CREATE ERROR ===');
+        console.log('Error:', error);
+        console.log('Error message:', error.message);
+        res.status(400).send({ message: error.message });
     }
-
-    res.locals.data.business = business;
-    next();
-  } catch (error) {
-    res.status(400).send({ message: error.message });
-  }
 };
 
+// Show a Business Profile
+dataController.show = async (req, res, next) => {
+    if (!res.locals.data) res.locals.data = {};
 
+    try {
+        const business = await Business.findById(req.params.id).populate('kayaks');
 
+        if (!business) {
+            throw new Error(`Could not locate a Business Profile with the id ${req.params.id}`);
+        }
+        
+        // Check if business belongs to current owner (optional security check)
+        if (business.owner.toString() !== req.businessOwner._id.toString()) {
+            return res.status(403).send({ message: 'Unauthorized to view this business' });
+        }
 
-
-// //Show a Business Profile
-
-// dataController.show = async(req, res, next ) => {
-//     try{
-//         //await for a user to tap on a business profile to show it and then store it in memory 
-//         res.locals.data.business = await Business.findById(req.params.id).populate('kayaks')
-//         // if there is no profile with an id in the database , give the user  message indicating that 
-//         if (!res.locals.data.business) {
-//             throw new Error(`Could not locate a Business Profile with the id ${req.params.id}`)
-//         }
-//         next()
-//     }
-//     catch(error) {
-//         res.status(400).send( { message: error.message } )
-//     }
-// }
+        res.locals.data.business = business;
+        res.locals.data.token = req.query.token || res.locals.data.token || '';
+        next();
+    } catch (error) {
+        res.status(400).send({ message: error.message });
+    }
+};
 
 module.exports = dataController
-
