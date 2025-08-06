@@ -1,46 +1,82 @@
-const React = require('react')
-const Layout = require('../layouts/Layout')
+const React = require('react');
+const Layout = require('../layouts/Layout');
 
-function Show(props) {
-    // Will add more later on like the refs to customer (ref), kayak(ref)
-    const { date, _id, status  } = props.booking
-  return(
-    <Layout booking = {props.booking}>
-        <nav>
-                <ul>
-                  <li>
-                    <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
-                  </li>
-                  <li>Why Kayakpal</li>
-                  <li><a href='/users/Index'>Login</a></li>
-                </ul>
-        </nav>
+function Edit(props) {
+  // Debug: Let's see what we're getting
+  console.log('Edit props:', props);
+  
+  // Handle flexible data structure safely
+  const data = props.data || props;
 
-        <h1>Edit {date}</h1>
-        {/* will change to Custoemr name later */}
+  const booking = data.booking || {};
+  const customer = data.customer || {};
+  const token = props.token || data.token || '';
+  
+  // Debug: Let's see the extracted values
+  console.log('Extracted token:', token);
+  console.log('props.token:', props.token);
+  console.log('data.token:', data.token);
 
-        <form action={`/bookings/${_id}?method=PUT&token=${props.token}`}method="POST">
-                {/* business (refs)
-                bookingS [] */}
-                Date: <input type='date' name='date' placeholder='Enter Date for booking ' required defaultValue={date} /> <br />
-                Status: <input type='boolean' name='status'  required defaultValue={status} /> <br />
-        </form>
-                
-               {/* Update a Booking */}
-                <button type='submit' ><a href={`/bookings/${_id}?token=${props.token}`}>Update {date}</a></button>
-        
+  // Format date and time from booking.bookingDateTime
+  const datetime = new Date(booking.bookingDateTime);
+  const formattedDate = datetime.toISOString().slice(0, 10); // YYYY-MM-DD
+  const formattedTime = datetime.toTimeString().slice(0, 5); // HH:MM (24hr)
 
-                {/* Back to all Bookings*/}
-                <div>
-                    <a href={`/bookings/${_id}?token=${props.token}`}>
-                    Back to {date}</a>
-                </div>
+  return (
+    <Layout token={token}>
+      <nav>
+        <ul>
+          <li>
+            <img src="/images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
+          </li>
+          <li>Why Kayakpal</li>
+          <li><a href={`/customers?token=${token}`}>Login</a></li>
+        </ul>
+      </nav>
 
-                {/* All links to adte will be changed to name Of ,custoemr or something else   */}
+      <h1>Edit Booking</h1>
 
+      <p><strong>Customer: </strong>{customer.name || 'No customer data'}</p>
 
-        
+      <form
+        action={`/bookings/${booking._id}?_method=PUT&token=${token}`}
+        method="POST"
+      >
+        <label>
+          Date:
+          <input
+            type="date"
+            name="date"
+            required
+            defaultValue={formattedDate}
+          />
+        </label>
+        <br />
+
+        <label>
+          Time:
+          <input
+            type="time"
+            name="time"
+            required
+            defaultValue={formattedTime}
+          />
+        </label>
+        <br />
+        <input type='submit' value='Update Booking' />
+      </form>
+
+      <form
+        action={`/bookings/${booking._id}?_method=DELETE&token=${token}`}
+        method="POST"
+        style={{ marginTop: '1em' }}
+      >
+        <button type="submit" style={{ backgroundColor: 'red', color: 'white' }}>
+          Delete Booking
+        </button>
+      </form>
     </Layout>
-)}
+  );
+}
 
-module.exports = Show
+module.exports = Edit;

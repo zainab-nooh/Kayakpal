@@ -79,20 +79,64 @@ dataController.create = async (req, res, next) => {
 
 //Show a Booking
 
-dataController.show = async(req, res, next ) => {
-    try{
-        //await for a user to tap on a business profile to show it and then store it in memory 
-        res.locals.data.booking = await Booking.findById(req.params.id)
-        // if there is no profile with an id in the database , give the user  message indicating that 
-        if (!res.locals.data.booking) {
-            throw new Error(`Could not locate a Booking with the id ${req.params.id}`)
-        }
-        next()
+
+
+dataController.show = async (req, res, next) => {
+  try {
+    // First, let's see the raw booking without populate
+    const rawBooking = await Booking.findById(req.params.id);
+    console.log('Raw booking from DB:', rawBooking);
+    
+    const booking = await Booking.findById(req.params.id).populate('kayak');
+    console.log('Populated booking:', booking);
+    
+    if (!booking) {
+      throw new Error(`Could not locate a Booking with the id ${req.params.id}`);
     }
-    catch(error) {
-        res.status(400).send( { message: error.messsage } )
-    }
-}
+
+    if (!res.locals.data) res.locals.data = {};
+    res.locals.data.booking = booking;
+    res.locals.data.customer = req.customer;
+    res.locals.data.token = req.token;
+    next();
+  } catch (error) {
+    res.status(400).send({ message: error.message });
+  }
+};
+// dataController.show = async (req, res, next) => {
+//   try {
+//     const booking = await Booking.findById(req.params.id).populate('kayak');
+//     if (!booking) {
+//       throw new Error(`Could not locate a Booking with the id ${req.params.id}`);
+//     }
+
+//     if (!res.locals.data) res.locals.data = {};
+//     res.locals.data.booking = booking;
+//     res.locals.data.customer = req.customer; // ✅ FIX: add this line
+//     res.locals.data.token = req.token;       // ✅ Optional but useful
+//     next();
+//   } catch (error) {
+//     res.status(400).send({ message: error.message });
+//   }
+// };
+
+
+
+
+// dataController.show = async(req, res, next ) => {
+//     try{
+//         //await for a user to tap on a business profile to show it and then store it in memory 
+//         res.locals.data.booking = await Booking.findById(req.params.id)
+//         // if there is no profile with an id in the database , give the user  message indicating that 
+//         if (!res.locals.data.booking) {
+//             throw new Error(`Could not locate a Booking with the id ${req.params.id}`)
+//         }
+//         next()
+//     }
+//     catch(error) {
+//         res.status(400).send( { message: error.messsage } )
+//     }
+// }
 
 module.exports = dataController
 

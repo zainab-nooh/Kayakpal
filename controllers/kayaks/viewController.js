@@ -1,29 +1,45 @@
-
-
 const RESOURCE_PATH = '/kayaks'
 const viewController = {
 
     //Index
     index(req, res, next) {
-        res.render('kayaks/Index', res.locals.data)
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            ...res.locals.data,
+            token: req.query.token
+        };
+        res.render('kayaks/Index', dataWithToken)
     },
 
     //Show
     show(req, res, next) {
-        res.render('kayaks/Show', res.locals.data)
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            ...res.locals.data,
+            token: req.query.token
+        };
+        res.render('kayaks/Show', dataWithToken)
     },
+    
     //Edit
     edit(req, res, next) {
         res.render('kayaks/Edit', {
             kayaks: res.locals.data.kayak,
             business: res.locals.data.business,
-            token: res.locals.data.token  
+            token: req.query.token || res.locals.data.token  
         })
     },
+    
     //New 
     newView(req, res, next) {
-        res.render('kayaks/New', res.locals.data)
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            ...res.locals.data,
+            token: req.query.token
+        };
+        res.render('kayaks/New', dataWithToken)
     },
+    
     //Redirect Home
     redirectHome(req, res, next) {
         if (res.locals.data.token) {
@@ -32,6 +48,7 @@ const viewController = {
             res.redirect(RESOURCE_PATH)
         }
     },
+    
     //Redirect Show
     redirectShow(req, res, next) {
         if (res.locals.data.token) {
@@ -42,19 +59,23 @@ const viewController = {
     }, 
 
     //Show All kayaks to customers (view)
-    
     showAllKayaks(req, res, next) {
-        res.render('kayaks/CustomerIndex', {
-            kayaks: res.locals.data.kayaks
-        })
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            kayaks: res.locals.data.kayaks,
+            token: req.query.token
+        };
+        res.render('kayaks/CustomerIndex', dataWithToken)
     },
 
-    //Show kayaks By businedd ID to customers (view)
-
+    //Show kayaks By business ID to customers (view)
     showByBusiness(req, res, next) {
-        res.render('kayaks/CustomerBusinessKayaks', {
-            kayaks: res.locals.data.kayaks
-        })
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            kayaks: res.locals.data.kayaks,
+            token: req.query.token
+        };
+        res.render('kayaks/CustomerBusinessKayaks', dataWithToken)
     }
 }
 

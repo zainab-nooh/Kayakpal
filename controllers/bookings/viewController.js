@@ -9,27 +9,37 @@ const viewController = {
 
     //Show
     show(req, res, next) {
-        res.render('bookings/Show', res.locals.data)
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            ...res.locals.data,
+            token: req.query.token
+        };
+        res.render('bookings/Show', dataWithToken)
     },
+    
     //Edit
     edit(req, res, next) {
-        res.render('bookings/Edit', res.locals.data)
+        // Extract token from query parameters and add it to the data
+        const dataWithToken = {
+            ...res.locals.data,
+            token: req.query.token
+        };
+        res.render('bookings/Edit', dataWithToken)
     },
-    //New 
-
-
     
+    //New 
     newView(req, res, next) {
-            const selectedKayak = res.locals.data.kayaks?.find(kayak => 
-        kayak._id.toString() === req.params.kayakId
-    );
-            res.render('bookings/New', {
-        customer: req.customer,  // Pass customer data
-        props: res.locals.data,
-        token: res.locals.data.token   // Pass other data as props
-    })
+        const selectedKayak = res.locals.data.kayaks?.find(kayak => 
+            kayak._id.toString() === req.params.kayakId
+        );
+        res.render('bookings/New', {
+            customer: req.customer,  // Pass customer data
+            props: res.locals.data,
+            token: res.locals.data.token   // Pass other data as props
+        })
         // res.render('bookings/New', res.locals.data)
     },
+    
     //Redirect Home
     redirectHome(req, res, next) {
         if(res.locals.data.token) {
@@ -38,6 +48,7 @@ const viewController = {
             res.redirect(RESOURCE_PATH)
         }
     },
+    
     //Redirect Show
     redirectShow(req, res, next) {
         if(res.locals.data.token) {

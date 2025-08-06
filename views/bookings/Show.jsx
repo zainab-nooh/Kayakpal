@@ -1,54 +1,53 @@
-const React = require('react')
-const Layout = require('../layouts/Layout')
+const React = require('react');
+const Layout = require('../layouts/Layout');
 
-function Show(props) {
-  return(
-    <Layout booking = {props.booking}>
-        <nav>
-                <ul>
-                  <li>
-                    <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
-                  </li>
-                  <li>Why Kayakpal</li>
-                  <li><a href='/users/Index'>Login</a></li>
-                </ul>
-        </nav>
+function Show(data) {
+  const { booking, customer, token } = data;
+  
+  // The kayak should be populated in booking.kayak
+  const kayak = booking?.kayak;
 
-        <h1>{props.booking.date}</h1>
-            {/*Need to change it from showing the date to show the customer name instead  */}
+  // Format date and time from booking.bookingDateTime (same as in Edit.jsx)
+  const datetime = booking?.bookingDateTime ? new Date(booking.bookingDateTime) : null;
+  const formattedDate = datetime ? datetime.toISOString().slice(0, 10) : 'N/A'; // YYYY-MM-DD
+  const formattedTime = datetime ? datetime.toTimeString().slice(0, 5) : 'N/A'; // HH:MM (24hr)
 
+  return (
+    <Layout token={token}>
+      <nav>
+        <ul>
+          <li>
+            <img src="/images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
+          </li>
+          <li>Why Kayakpal</li>
+          <li><a href={`/customers?token=${token}`}>Login</a></li>
+        </ul>
+      </nav>
 
-        <div className='booking-card'>
-            <div className='booking-date'>{props.booking.date}</div>
-            <div className='booking-staus'>Status: {props.booking.status}</div>
-                {/* business (refs)
-                bookingS [] */}
-        </div>
+      <h1>Booking Details</h1>
 
-        {/* Back to all Bookings*/}
-        <div>
-            <a href={`/bookings/?token=${props.token}`}>
-             Back to All Bookings</a>
-        </div>
+      <p><strong>Customer:</strong> {customer?.name || 'N/A'}</p>
+      <p><strong>Date:</strong> {formattedDate}</p>
+      <p><strong>Time:</strong> {formattedTime}</p>
+      <p><strong>Kayak:</strong> {kayak?.title || 'N/A'}</p>
 
-        {/* Edit a Booking */}
-        <div>
-            <a href={`/bookings/${props.booking._id}/edit?tokrn=${props.token}`}>
-            Edit ${props.booking.date}</a>
-             {/*Need to change it from showing the date to show the customer name instead  */}
-        </div>
+      <div style={{ marginTop: '1.5em' }}>
+        <a href={`/bookings/${booking?._id}/edit?token=${token}`}>
+          <button>Edit Booking</button>
+        </a>
 
-        {/* Delete a Booking */}
-        <form action={`/bookings/${props.booking._id}?method="DELETE&token=${props.token}`}method="POST">
-            <button>
-                Delete {props.booking.date}
-                {/*Need to change it from showing the date to show the customer name instead  */}
-
-            </button>
+        <form
+          action={`/bookings/${booking?._id}?_method=DELETE&token=${token}`}
+          method="POST"
+          style={{ display: 'inline', marginLeft: '1em' }}
+        >
+          <button type="submit" style={{ backgroundColor: 'red', color: 'white' }}>
+            Delete Booking
+          </button>
         </form>
-
-        
+      </div>
     </Layout>
-)}
+  );
+}
 
-module.exports = Show
+module.exports = Show;
