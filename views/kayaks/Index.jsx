@@ -1,7 +1,10 @@
+import kayak from '../../models/kayak'
+
 const React = require('react')
 const Layout = require('../layouts/Layout')
 
 function Index(props) {
+    const kayaks = props.kayaks
 
   return(
     <Layout>
@@ -16,6 +19,16 @@ function Index(props) {
         </nav>
         <div>
         <h1>All Kayaks</h1>
+         {
+          kayaks.map(kayak => {
+            return <p key={kayak._id}>
+              <a href={`/kayaks/${kayak._id}?token=${props.token}`}>
+                {kayak.title}
+              </a>
+            </p>
+          })
+        }
+
         <a href={`/kayaks/new?token=${props.token}`}>Add Your Kayak</a>
         </div>
 

@@ -30,12 +30,12 @@ function Show(props) {
 
         {/* Edit Kayak profile */}
         <div>
-            <a href={`/kayaks/${props.kayak._id}/edit?tokrn=${props.token}`}>
+            <a href={`/kayaks/${props.kayak._id}/edit?token=${props.token}`}>
             Edit ${props.kayak.title}</a>
         </div>
 
         {/* Delete Kayak profile */}
-        <form action={`/kayaks/${props.kayak._id}?method="DELETE&token=${props.token}`}method="POST">
+        <form action={`/kayaks/${props.kayak._id}?_method=DELETE&token=${props.token}`}method="POST">
             <button>
                 Delete {props.kayak.title}
             </button>

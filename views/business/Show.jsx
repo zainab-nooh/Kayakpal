@@ -35,7 +35,7 @@ function Show(props) {
       </div>
 
       {/* Delete business profile */}
-      <form action={`/business/${props.business._id}?_method="DELETE&token=${props.token}`} method="POST">
+      <form action={`/business/${props.business._id}?_method=DELETE&token=${props.token}`} method="POST">
         <button>
           Delete {props.business.name}
         </button>

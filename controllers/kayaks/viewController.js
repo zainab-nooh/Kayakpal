@@ -12,7 +12,11 @@ const viewController = {
     },
     //Edit
     edit(req, res, next) {
-        res.render('kayaks/Edit', res.locals.data)
+        res.render('kayaks/Edit', {
+            kayaks: res.locals.data.kayak,
+            business: res.locals.data.business,
+            token: res.locals.data.token  // ✅ this is what you're missing
+        })
     },
     //New 
     newView(req, res, next) {
@@ -20,15 +24,15 @@ const viewController = {
     },
     //Redirect Home
     redirectHome(req, res, next) {
-        if(res.locals.data.token) {
+        if (res.locals.data.token) {
             res.redirect(`${RESOURCE_PATH}?token=${res.locals.data.token}`)
-        } else{
+        } else {
             res.redirect(RESOURCE_PATH)
         }
     },
     //Redirect Show
     redirectShow(req, res, next) {
-        if(res.locals.data.token) {
+        if (res.locals.data.token) {
             res.redirect(`${RESOURCE_PATH}/${req.params.id}?token=${res.locals.data.token}`)
         } else {
             res.redirect(`${RESOURCE_PATH}/${req.params.id}`)

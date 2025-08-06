@@ -1,4 +1,4 @@
-const Kayak = require('../../models/kayak')
+const kayak = require('../../models/kayak')
 
 // Returns json Responses 
 const apiController = {
@@ -8,11 +8,11 @@ const apiController = {
     },
     //show -  get a single business profile
     show(req, res) {
-        res.json(res.locals.data.Kayak)
+        res.json(res.locals.data.kayak)
     },
     // Create a a new Business Profile
     create(req,res) {
-        res.status(201).json(res.locals.data.Kayak)
+        res.status(201).json(res.locals.data.kayak)
     },
     //Delete a Business Profile
     destroy(req, res) {

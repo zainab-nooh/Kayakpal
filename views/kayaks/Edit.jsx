@@ -1,10 +1,11 @@
 const React = require('react')
 const Layout = require('../layouts/Layout')
 
-function Show(props) {
-    const { title, _id, description, price } = props.business
+function Edit(props) {
+    const { title, _id, description, price } = props.kayaks
   return(
-    <Layout business = {props.business}>
+    <Layout kayaks={props.kayaks} business={props.business}>
+
         <nav>
                 <ul>
                   <li>
@@ -15,20 +16,19 @@ function Show(props) {
                 </ul>
         </nav>
 
-        <h1>Edit {name}</h1>
+        <h1>Edit {title}</h1>
 
-        <form action={`/kayaks/${_id}?method=PUT&token=${props.token}`}method="POST">
+        <form action={`/kayaks/${_id}?_method=PUT&token=${props.token}`}method="POST">
                 Title: <input type='text' name='title' placeholder='Enter your Kayak title' required defaultValue={title}/> <br/>
                 Description: <input type='text' name='description' placeholder='Enter Description of your Kayak' required defaultValue={description}/> <br/>
                 Price: <input type='text' name='price' placeholder="Enter your Kayak's Price per hour" required defaultValue={price} /> <br/>
-                {/* Upload image Palce of business  */}
-        </form>
-                
-               {/* Update Business Profile */}
-                <button type='submit' ><a href={`/kayaks/${_id}?token=${props.token}`}>Update {title}</a></button>
-        
+                {/* Upload image Palce of Kayak  */}
 
-                {/* Back to all business profiles*/}
+               {/* Update Kayak Profile */}
+                <input type='submit' value={`Update${title}`} />
+        </form>
+
+                {/* Back to all kayaks profiles*/}
                 <div>
                     <a href={`/kayaks/${_id}?token=${props.token}`}>
                     Back to {title}</a>
@@ -39,4 +39,4 @@ function Show(props) {
     </Layout>
 )}
 
-module.exports = Show
+module.exports = Edit

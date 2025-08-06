@@ -18,7 +18,9 @@ exports.auth = async( req, res, next) => {
 
     const data = jwt.verify(token, 'secret'); // 🔐 Replace 'secret' with process.env.JWT_SECRET ideally
 
-    const businessOwner = await BusinessOwner.findById(data._id);
+    // const businessOwner = await BusinessOwner.findById(data._id);
+    const businessOwner = await BusinessOwner.findById(data._id).populate('business');
+
     if (!businessOwner) {
       throw new Error('User not found');
     }

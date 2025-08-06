@@ -16,11 +16,12 @@ function New(props) {
 
       <h1>Kayak</h1>
 
-      <form action='/kayaks' method="POST">
+      <form action={`/kayaks?token=${props.token}`} method="POST">
         Title: <input type='text' name='title' placeholder='Enter your Kayak title' required /> <br />
         Description: <input type='text' name='description' placeholder='Enter Description of your Kayak' required /> <br />
         Price: <input type='text' name='price' placeholder="Enter your Kayak's Price per hour" required /> <br />
-        <button type='submit'>Create Kayak Profile</button>
+        <input type='submit' value='Create Kayak Profile' />
+        
       </form>
     </Layout>
   );
