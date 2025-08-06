@@ -9,7 +9,9 @@ function CustomerBusinessKayaks(props) {
       <nav>
         <ul>
           <li>
-            <img src="/images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
+            <a href="/Home" style={{ textDecoration: 'none' }}>
+              <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px', cursor: 'pointer' }} />
+            </a>
           </li>
           <li><a href="/kayaks">← Back to All Kayaks</a></li>
           <li><a href='/users/Index'>Login</a></li>

@@ -2,7 +2,7 @@ const React = require('react')
 const Layout = require('../layouts/Layout')
 
 function Index(props) {
-  // Font definitions and global styles
+  // Font definitions and global styles, including responsive features grid
   const fontStyles = `
     <style>
       @font-face {
@@ -32,14 +32,19 @@ function Index(props) {
         margin: 0;
         padding: 0;
       }
+
+      @media (max-width: 900px) {
+        .features-grid {
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        }
+      }
     </style>
   `
 
-  // Define styles as JavaScript objects with your custom colors and fonts
+  // Styles object with your colors and fonts
   const styles = {
-    // Navigation styles
     nav: {
-      background: 'white',
+      background: '#f6f4ee',
       padding: '1rem 0',
       boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
       position: 'fixed',
@@ -76,8 +81,7 @@ function Index(props) {
       textDecoration: 'none',
       fontFamily: 'Inter 24pt, sans-serif'
     },
-    
-    // Main content styles
+
     mainContent: {
       marginTop: '80px',
       padding: '4rem 0',
@@ -89,8 +93,7 @@ function Index(props) {
       margin: '0 auto',
       padding: '0 2rem'
     },
-    
-    // Hero section styles
+
     heroSection: {
       textAlign: 'center',
       marginBottom: '4rem'
@@ -137,8 +140,7 @@ function Index(props) {
       fontWeight: '600',
       fontFamily: 'Inter 28pt, sans-serif'
     },
-    
-    // Activities grid styles
+
     activitiesGrid: {
       display: 'grid',
       gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
@@ -187,18 +189,15 @@ function Index(props) {
       opacity: '0.9',
       fontFamily: 'Inter 24pt, sans-serif'
     },
-    
-    // Features section styles
+
     featuresSection: {
-      background: 'white',
       padding: '4rem 0',
-      borderRadius: '20px',
-      margin: '4rem 0',
-      boxShadow: '0 10px 30px rgba(0,0,0,0.05)'
+      margin: '4rem 0'
+      // Removed background, borderRadius, boxShadow
     },
     featuresGrid: {
       display: 'grid',
-      gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
+      gridTemplateColumns: 'repeat(4, 1fr)', // fixed 4 columns on large screens
       gap: '3rem'
     },
     featureItem: {
@@ -209,13 +208,12 @@ function Index(props) {
       width: '80px',
       height: '80px',
       margin: '0 auto 1.5rem',
-      background: 'linear-gradient(135deg, #209b9f, #1a8589)',
       borderRadius: '50%',
+      overflow: 'hidden',
       display: 'flex',
       alignItems: 'center',
-      justifyContent: 'center',
-      color: '#fffefe',
-      fontSize: '2rem'
+      justifyContent: 'center'
+      // removed background & color since using images now
     },
     featureTitle: {
       fontSize: '1.5rem',
@@ -234,17 +232,15 @@ function Index(props) {
 
   return (
     <Layout>
-      <div dangerouslySetInnerHTML={{__html: fontStyles}} />
-      
-      {/* Navigation - keeping your original structure and links */}
+      <div dangerouslySetInnerHTML={{ __html: fontStyles }} />
+
+      {/* Navigation */}
       <nav style={styles.nav}>
         <ul style={styles.navUl}>
           <li style={styles.navLi}>
-            <a href="/Home" style={{ textDecoration: 'none' }}>
-              <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px', cursor: 'pointer' }} />
-            </a>
+            <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
           </li>
-          <li style={{...styles.navLi, marginLeft: 'auto', marginRight: '2rem'}}>
+          <li style={{ ...styles.navLi, marginLeft: 'auto', marginRight: '2rem' }}>
             <span style={styles.navText}>Why Kayakpal</span>
           </li>
           <li style={styles.navLi}>
@@ -256,8 +252,8 @@ function Index(props) {
       {/* Main Content */}
       <div style={styles.mainContent}>
         <div style={styles.container}>
-          
-          {/* Hero Section - keeping your original content */}
+
+          {/* Hero Section */}
           <section style={styles.heroSection}>
             <h1 style={styles.heroTitle}>
               What will you <span style={styles.highlight}>do today?</span>
@@ -267,9 +263,9 @@ function Index(props) {
             </p>
           </section>
 
-          {/* CTA Button - keeping your original link */}
+          {/* CTA Button */}
           <div style={styles.ctaButtonContainer}>
-            <button 
+            <button
               style={styles.ctaButton}
               onMouseEnter={(e) => {
                 e.target.style.transform = 'translateY(-2px)'
@@ -287,9 +283,9 @@ function Index(props) {
           {/* Activities Section */}
           <section>
             <div style={styles.activitiesGrid}>
-              
+
               {/* Solo Kayak Card 1 */}
-              <div 
+              <div
                 style={styles.activityCard}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'translateY(-5px)'
@@ -302,7 +298,7 @@ function Index(props) {
               >
                 <div style={{
                   ...styles.activityImage,
-                  backgroundImage: 'url("../../images/pexels-asadphoto.jpg")'
+                  backgroundImage: 'url("https://www.seakayakpaddler.co.uk/images/PH_intro16.jpg")'
                 }}></div>
                 <div style={styles.activityContent}>
                   <h3 style={styles.activityTitle}>Solo-Kayak</h3>
@@ -315,7 +311,7 @@ function Index(props) {
               </div>
 
               {/* Combo Kayak Card */}
-              <div 
+              <div
                 style={styles.activityCard}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'translateY(-5px)'
@@ -328,7 +324,7 @@ function Index(props) {
               >
                 <div style={{
                   ...styles.activityImage,
-                  backgroundImage: 'url("../../images/pexels-jaime.jpg")'
+                  backgroundImage: 'url("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJEBOAE37ZQmOh0Mf0PPHBFdfu6cbD4GR0Zg&s&auto=format&fit=crop&w=1000&q=80")'
                 }}></div>
                 <div style={styles.activityContent}>
                   <h3 style={styles.activityTitle}>Combo-Kayak</h3>
@@ -341,7 +337,7 @@ function Index(props) {
               </div>
 
               {/* Solo Kayak Card 2 */}
-              <div 
+              <div
                 style={styles.activityCard}
                 onMouseEnter={(e) => {
                   e.target.style.transform = 'translateY(-5px)'
@@ -354,7 +350,7 @@ function Index(props) {
               >
                 <div style={{
                   ...styles.activityImage,
-                  backgroundImage: 'url("../../images/pexels-roland.jpg")'
+                  backgroundImage: 'url("https://assets.simpleviewinc.com/simpleview/image/upload/c_fill,f_jpg,g_xy_center,h_777,q_65,w_639,x_800,y_592/v1/clients/portaransastx/TkD44eMj_56416570-9f33-48b8-980e-ba3731d19934.jpg")'
                 }}></div>
                 <div style={styles.activityContent}>
                   <h3 style={styles.activityTitle}>Solo-Kayak</h3>
@@ -372,28 +368,52 @@ function Index(props) {
           {/* Features Section */}
           <section style={styles.featuresSection}>
             <div style={styles.container}>
-              <div style={styles.featuresGrid}>
-                
+              <div style={styles.featuresGrid} className="features-grid">
+
                 <div style={styles.featureItem}>
-                  <div style={styles.featureIcon}>📚</div>
+                  <div style={styles.featureIcon}>
+                    <img
+                      src="/images/1.jpeg"
+                      alt="Book Icon"
+                      style={{ width: '80px', height: '80px', borderRadius: '50%' }}
+                    />
+                  </div>
                   <h3 style={styles.featureTitle}>Book</h3>
                   <p style={styles.featureSubtitle}>Anywhere</p>
                 </div>
 
                 <div style={styles.featureItem}>
-                  <div style={styles.featureIcon}>🎯</div>
+                  <div style={styles.featureIcon}>
+                    <img
+                      src="/images/2.jpeg"
+                      alt="Goal Icon"
+                      style={{ width: '80px', height: '80px', borderRadius: '50%' }}
+                    />
+                  </div>
                   <h3 style={styles.featureTitle}>Choose</h3>
                   <p style={styles.featureSubtitle}>Everything</p>
                 </div>
 
                 <div style={styles.featureItem}>
-                  <div style={styles.featureIcon}>✅</div>
+                  <div style={styles.featureIcon}>
+                    <img
+                      src="/images/3.jpeg"
+                      alt="True Icon"
+                      style={{ width: '80px', height: '80px', borderRadius: '50%' }}
+                    />
+                  </div>
                   <h3 style={styles.featureTitle}>Turn Plans</h3>
                   <p style={styles.featureSubtitle}>into Booked</p>
                 </div>
 
                 <div style={styles.featureItem}>
-                  <div style={styles.featureIcon}>🔍</div>
+                  <div style={styles.featureIcon}>
+                    <img
+                      src="/images/4.jpeg"
+                      alt="Search Icon"
+                      style={{ width: '80px', height: '80px', borderRadius: '50%' }}
+                    />
+                  </div>
                   <h3 style={styles.featureTitle}>Find things</h3>
                   <p style={styles.featureSubtitle}>Fast</p>
                 </div>

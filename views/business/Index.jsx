@@ -3,33 +3,263 @@ const Layout = require('../layouts/Layout')
 
 function Index(props) {
   const businessProfiles = props.businessProfiles
+  
+  // Font definitions and global styles
+  const fontStyles = `
+    <style>
+      @font-face {
+        font-family: 'Source Serif 4';
+        src: url('../fonts/SourceSerif4_18pt-Medium.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      @font-face {
+        font-family: 'Inter 24pt';
+        src: url('../fonts/Inter_24pt-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+      }
+      
+      @font-face {
+        font-family: 'Inter 28pt';
+        src: url('../fonts/Inter_28pt-Bold.ttf') format('truetype');
+        font-weight: bold;
+        font-style: normal;
+      }
+      
+      body {
+        background-color: #f6f4ee;
+        color: #181816;
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+      }
+    </style>
+  `
+
+  const styles = {
+    // Navigation styles
+    nav: {
+      background: 'white',
+      padding: '1rem 0',
+      boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
+      position: 'fixed',
+      width: '100%',
+      top: 0,
+      zIndex: 1000
+    },
+    navUl: {
+      maxWidth: '1200px',
+      margin: '0 auto',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      padding: '0 2rem',
+      listStyle: 'none'
+    },
+    navLi: {
+      display: 'flex',
+      alignItems: 'center'
+    },
+    navText: {
+      color: '#181816',
+      fontFamily: 'Inter 24pt, sans-serif',
+      fontWeight: '500',
+      cursor: 'pointer'
+    },
+    navLink: {
+      background: '#209b9f',
+      color: '#fffefe',
+      padding: '0.5rem 1.5rem',
+      borderRadius: '25px',
+      transition: 'background 0.3s ease',
+      textDecoration: 'none',
+      fontFamily: 'Inter 24pt, sans-serif'
+    },
+
+    // Main content styles
+    mainContent: {
+      marginTop: '80px',
+      padding: '4rem 0',
+      backgroundColor: '#f6f4ee',
+      minHeight: '100vh'
+    },
+    container: {
+      maxWidth: '1000px',
+      margin: '0 auto',
+      padding: '0 2rem'
+    },
+
+    // Page title styles
+    pageTitle: {
+      fontSize: '3.5rem',
+      fontWeight: '300',
+      color: '#209b9f',
+      marginBottom: '3rem',
+      lineHeight: '1.2',
+      fontFamily: 'Source Serif 4, serif',
+      textAlign: 'center'
+    },
+
+    // Business profiles container
+    profilesContainer: {
+      display: 'grid',
+      gap: '2rem',
+      marginBottom: '3rem'
+    },
+
+    // Business profile card
+    profileCard: {
+      background: 'white',
+      padding: '2rem',
+      borderRadius: '15px',
+      boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
+      transition: 'all 0.3s ease',
+      border: '1px solid #e5e5e5'
+    },
+
+    // Business profile link
+    profileLink: {
+      color: '#181816',
+      textDecoration: 'none',
+      fontSize: '1.5rem',
+      fontFamily: 'Source Serif 4, serif',
+      fontWeight: '400',
+      transition: 'color 0.3s ease',
+      display: 'block'
+    },
+
+    // Add business section
+    addBusinessSection: {
+      textAlign: 'center',
+      padding: '3rem 0'
+    },
+
+    // Add business button
+    addBusinessButton: {
+      display: 'inline-block',
+      background: 'linear-gradient(135deg, #209b9f, #1a8589)',
+      color: '#fffefe',
+      padding: '1.2rem 2.5rem',
+      borderRadius: '25px',
+      textDecoration: 'none',
+      fontSize: '1.2rem',
+      fontWeight: '600',
+      fontFamily: 'Inter 28pt, sans-serif',
+      transition: 'all 0.3s ease',
+      boxShadow: '0 4px 15px rgba(32, 155, 159, 0.2)'
+    },
+
+    // Empty state
+    emptyState: {
+      textAlign: 'center',
+      padding: '4rem 2rem',
+      color: '#666'
+    },
+    emptyStateTitle: {
+      fontSize: '2rem',
+      fontFamily: 'Source Serif 4, serif',
+      marginBottom: '1rem',
+      color: '#181816'
+    },
+    emptyStateText: {
+      fontSize: '1.1rem',
+      fontFamily: 'Inter 24pt, sans-serif',
+      marginBottom: '2rem'
+    }
+  }
+
+  // Hover handlers
+  const handleCardHover = (e) => {
+    e.currentTarget.style.transform = 'translateY(-5px)'
+    e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.15)'
+    const link = e.currentTarget.querySelector('a')
+    if (link) link.style.color = '#209b9f'
+  }
+
+  const handleCardLeave = (e) => {
+    e.currentTarget.style.transform = 'translateY(0)'
+    e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)'
+    const link = e.currentTarget.querySelector('a')
+    if (link) link.style.color = '#181816'
+  }
+
+  const handleButtonHover = (e) => {
+    e.target.style.transform = 'translateY(-2px)'
+    e.target.style.boxShadow = '0 8px 25px rgba(32, 155, 159, 0.3)'
+  }
+
+  const handleButtonLeave = (e) => {
+    e.target.style.transform = 'translateY(0)'
+    e.target.style.boxShadow = '0 4px 15px rgba(32, 155, 159, 0.2)'
+  }
+
   return (
     <Layout>
-      <nav>
-        <ul>
-          <li>
-            <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px' }} />
+      <div dangerouslySetInnerHTML={{__html: fontStyles}} />
+      
+      {/* Navigation */}
+      <nav style={styles.nav}>
+        <ul style={styles.navUl}>
+          <li style={styles.navLi}>
+            <a href="/Home" style={{ textDecoration: 'none' }}>
+              <img src="../../images/Kayakpal-logo.png" alt="Logo" style={{ height: '40px', cursor: 'pointer' }} />
+            </a>
           </li>
-          <li>Why Kayakpal</li>
-          <li><a href='/users/Index'>Login</a></li>
+          <li style={{...styles.navLi, marginLeft: 'auto', marginRight: '2rem'}}>
+            <span style={styles.navText}>Why Kayakpal</span>
+          </li>
+          <li style={styles.navLi}>
+            <a href='/users/Index' style={styles.navLink}>Login</a>
+          </li>
         </ul>
       </nav>
-      <div>
-        <h1>All Business Profiles</h1>
-        {
-          businessProfiles.map(businessProfile => {
-            return <p key={businessProfile._id}>
-              <a href={`/business/${businessProfile._id}?token=${props.token}`}>
-                {businessProfile.name}
-              </a>
-            </p>
-          })
 
-        }
-        <a href={`/business/new?token=${props.token}`}>Add Your Business</a>
+      {/* Main Content */}
+      <div style={styles.mainContent}>
+        <div style={styles.container}>
+          <h1 style={styles.pageTitle}>All Business Profiles</h1>
+          
+          {businessProfiles && businessProfiles.length > 0 ? (
+            <div style={styles.profilesContainer}>
+              {businessProfiles.map(businessProfile => (
+                <div 
+                  key={businessProfile._id} 
+                  style={styles.profileCard}
+                  onMouseEnter={handleCardHover}
+                  onMouseLeave={handleCardLeave}
+                >
+                  <a 
+                    href={`/business/${businessProfile._id}?token=${props.token}`}
+                    style={styles.profileLink}
+                  >
+                    {businessProfile.name}
+                  </a>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div style={styles.emptyState}>
+              <h2 style={styles.emptyStateTitle}>No Business Profiles Yet</h2>
+              <p style={styles.emptyStateText}>
+                Be the first to add your business to Kayakpal and start connecting with customers.
+              </p>
+            </div>
+          )}
+
+          <div style={styles.addBusinessSection}>
+            <a 
+              href={`/business/new?token=${props.token}`}
+              style={styles.addBusinessButton}
+              onMouseEnter={handleButtonHover}
+              onMouseLeave={handleButtonLeave}
+            >
+              Add Your Business
+            </a>
+          </div>
+        </div>
       </div>
-
-
     </Layout>
   )
 }
