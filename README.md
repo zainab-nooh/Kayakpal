@@ -196,7 +196,7 @@ Kayakpal is a specialized booking platform that connects kayak enthusiasts with 
 - **Wireframe**: [Link](https://excalidraw.com/#json=gZ5a-QdVNzrOyTI0lRaHs,yko7xQ6Yps8tREqEQS0l6Q)
 
 - **Trello**: [Board](https://trello.com/b/l8WdAQ6N/kayakpal)
-- **Design**: [Design Page Link]()
+
 
 ## Resources Used
 * **Fonts Used** Inter, Mackinac
