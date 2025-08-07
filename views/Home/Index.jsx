@@ -5,12 +5,12 @@ function Index(props) {
   // Font definitions and global styles, including responsive features grid
   const fontStyles = `
     <style>
-      @font-face {
-        font-family: 'Source Serif 4';
-        src: url('../fonts/SourceSerif4_18pt-Medium.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-      }
+ @font-face {
+    font-family: 'P22 Mackinac Medium'; 
+    src: url('../fonts/FSP_DEMO_-_P22_Mackinac_Medium_Regular.otf') format('opentype'); // Update the path and format
+    font-weight: normal;
+    font-style: normal;
+}
       
       @font-face {
         font-family: 'Inter 24pt';
@@ -104,7 +104,7 @@ function Index(props) {
       color: '#181816',
       marginBottom: '1rem',
       lineHeight: '1.2',
-      fontFamily: 'Source Serif 4, serif'
+      fontFamily: 'P22 Mackinac Medium, serif'
     },
     highlight: {
       color: '#209b9f',
@@ -168,7 +168,7 @@ function Index(props) {
       fontSize: '1.5rem',
       fontWeight: '600',
       marginBottom: '0.5rem',
-      fontFamily: 'Source Serif 4, serif'
+      fontFamily: 'P22 Mackinac Medium, serif'
     },
     activityProvider: {
       fontSize: '1rem',
@@ -220,7 +220,7 @@ function Index(props) {
       fontWeight: '600',
       color: '#181816',
       marginBottom: '0.5rem',
-      fontFamily: 'Source Serif 4, serif'
+      fontFamily: 'P22 Mackinac Medium, serif'
     },
     featureSubtitle: {
       color: '#666',

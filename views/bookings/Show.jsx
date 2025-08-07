@@ -58,7 +58,7 @@ function Show(data) {
   const styles = {
     // Navigation styles
     nav: {
-      background: 'white',
+      background: '#f6f4ee',
       padding: '1rem 0',
       boxShadow: '0 2px 10px rgba(0,0,0,0.1)',
       position: 'fixed',
