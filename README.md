@@ -7,7 +7,7 @@ Kayakpal is a specialized booking platform that connects kayak enthusiasts with 
 
 #  **Demo**
 
- Visit the [live demo](https://connect-4-q48h.onrender.com) to see Connect 4 in action
+ Visit the [live demo](https://kayakpal.onrender.com) to see Connect 4 in action
 
 <br>
 
