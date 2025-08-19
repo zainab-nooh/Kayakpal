@@ -317,7 +317,7 @@ function New(props) {
               />
             </div>
 
-            <div style={styles.fieldContainer}>
+            {/* <div style={styles.fieldContainer}>
               <label style={styles.label}>Business Image</label>
               <div 
                 style={styles.fileInputContainer}
@@ -335,7 +335,7 @@ function New(props) {
                   />
                 </label>
               </div>
-            </div>
+            </div> */}
 
             <input 
               type='submit' 

@@ -32,6 +32,9 @@ app.use(morgan('dev'))
 app.use('/businessOwners', businessOwnerRoutes) //Business Owners Routes connected
 app.use('/customers', customerRoutes) //Customers Routes Connected
 app.use('/Home', indexPage) //Main Home Page
+app.get('/', (req, res) => {
+  res.redirect('/Home')
+})
 app.use('/users', usersRoute)//Page after tapping Login in Main home page 
 app.use('/business' ,businessRoutes) //Business Profiles Routes
 app.use('/kayaks', kayakRoutes)
