@@ -3,6 +3,11 @@
 ## Description
 Kayakpal is a specialized booking platform that connects kayak enthusiasts with local kayak rental businesses and tour operators. The platform streamlines the kayak rental experience by providing dedicated interfaces for both customers and business owners to manage bookings, profiles, and kayak fleet operations.
 
+## Demo
+
+ Visit the [live demo](https://kayakpal-ksvd.onrender.com) to see Kayakpal in action
+
+<br>
 
 
 
